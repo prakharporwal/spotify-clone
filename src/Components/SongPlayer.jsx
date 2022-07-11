@@ -6,9 +6,13 @@ import {
   MdOutlinePictureInPictureAlt,
   MdSkipNext,
   MdSkipPrevious,
+  MdOutlineQueueMusic,
 } from "react-icons/md";
 import { FiVolume1, FiVolumeX, FiVolume2, FiVolume } from "react-icons/fi";
 import { AiFillPlayCircle, AiFillPauseCircle } from "react-icons/ai";
+import { Link } from "react-router-dom";
+
+let songqueue = [];
 
 const SongPlayer = (props) => {
   const [liked, setLiked] = useState(false);
@@ -18,16 +22,12 @@ const SongPlayer = (props) => {
   }
 
   return (
-    <section className="grid grid-cols-player bg-[#121212] fixed bottom-0 w-screen h-24 text-white border border-[#282828] text-xs">
+    <section className="song-player-bar grid grid-cols-player bg-mygrey-600 fixed bottom-0 w-screen h-24 text-white border border-mygrey-800 text-xs">
       <div className="flex gap-2">
-        <div className="py-4 px-2 h-2">
-          <img
-            className="h-12 w-16 border"
-            src="logo192.png"
-            alt="songimg"
-          ></img>
+        <div className="h-16 w-16 border self-center">
+          <img src="logo192.png" alt="songimg"></img>
         </div>
-        <div className="flex flex-col py-4 px-0 gap-1 sm:w-32 w-80 overflow-x-hidden whitespace-nowrap">
+        <div className="flex flex-col py-4 px-0 gap-1 w-80 overflow-x-hidden whitespace-nowrap">
           <span className="mt-2">Song Name</span>
           <span>Artist, Prakhar Porwal, Nice Person, Amitabh</span>
         </div>
@@ -66,7 +66,22 @@ const PlayerControls = (props) => {
   const [repeat, setRepeat] = useState(DISABLED);
   const [shuffle, setShuffle] = useState(false);
 
+  function play() {
+    let item = document.getElementById("audioplayer");
+    if (item !== null) item.play();
+  }
+
+  function pause() {
+    let item = document.getElementById("audioplayer");
+    if (item !== null) item.pause();
+  }
+
   function handlePlayingClick() {
+    if (playing) {
+      pause();
+    } else {
+      play();
+    }
     setPlaying(!playing);
   }
 
@@ -91,67 +106,69 @@ const PlayerControls = (props) => {
   }
 
   return (
-    <section className="player-controls px-12 m-2 grid grid-flow-col grid-cols-5">
-      <button
-        title="Enable Shuffle"
-        className="song-player-button py-4 text-xl"
-        onClick={handleShuffleClick}
-      >
-        {shuffle ? <BiShuffle /> : <BiShuffle className="text-mygreen" />}
-      </button>
-
-      <button title="Previous" className="song-player-button py-4 text-3xl">
-        <MdSkipPrevious />
-      </button>
-
-      {playing ? (
+    <>
+      <AudioPlayer loop={repeat === REPEATONE} src={"songs/roz.mp3"} />
+      <section className="player-controls px-12 m-2 grid grid-flow-col grid-cols-5">
         <button
-          title="Pause"
-          className="py-4 text-4xl"
-          onClick={handlePlayingClick}
-        >
-          <AiFillPauseCircle />
-        </button>
-      ) : (
-        <button
-          title="Play"
-          className="py-4 text-4xl"
-          onClick={handlePlayingClick}
-        >
-          <AiFillPlayCircle />
-        </button>
-      )}
-
-      <button title="Next" className="song-player-button py-4 text-3xl">
-        <MdSkipNext />
-      </button>
-
-      {repeat === DISABLED ? (
-        <button
-          title="Enable Repeat"
+          title="Enable Shuffle"
           className="song-player-button py-4 text-xl"
-          onClick={handleRepeatButtonClick}
+          onClick={handleShuffleClick}
         >
-          <TbRepeat />
+          {shuffle ? <BiShuffle /> : <BiShuffle className="text-mygreen" />}
         </button>
-      ) : repeat === ENABLED ? (
-        <button
-          title="Repeat Once"
-          className="song-player-button py-4 text-xl"
-          onClick={handleRepeatButtonClick}
-        >
-          <TbRepeat className="text-mygreen" />
+
+        <button title="Previous" className="song-player-button py-4 text-3xl">
+          <MdSkipPrevious />
         </button>
-      ) : (
-        <button
-          title="Disable Repeat"
-          className="song-player-button py-4 text-xl"
-          onClick={handleRepeatButtonClick}
-        >
-          <TbRepeatOnce className="text-mygreen" />
+
+        {playing ? (
+          <button
+            title="Pause"
+            className="py-4 text-4xl"
+            onClick={handlePlayingClick}
+          >
+            <AiFillPauseCircle />
+          </button>
+        ) : (
+          <button
+            title="Play"
+            className="py-4 text-4xl"
+            onClick={handlePlayingClick}
+          >
+            <AiFillPlayCircle />
+          </button>
+        )}
+        <button title="Next" className="song-player-button py-4 text-3xl">
+          <MdSkipNext />
         </button>
-      )}
-    </section>
+
+        {repeat === DISABLED ? (
+          <button
+            title="Enable Repeat"
+            className="song-player-button py-4 text-xl"
+            onClick={handleRepeatButtonClick}
+          >
+            <TbRepeat />
+          </button>
+        ) : repeat === ENABLED ? (
+          <button
+            title="Repeat Once"
+            className="song-player-button py-4 text-xl"
+            onClick={handleRepeatButtonClick}
+          >
+            <TbRepeat className="text-mygreen" />
+          </button>
+        ) : (
+          <button
+            title="Disable Repeat"
+            className="song-player-button py-4 text-xl"
+            onClick={handleRepeatButtonClick}
+          >
+            <TbRepeatOnce className="text-mygreen" />
+          </button>
+        )}
+      </section>
+    </>
   );
 };
 
@@ -205,13 +222,36 @@ const OtherControls = (props) => {
       <div className="flex gap-2">
         <button
           title="Volume"
-          className="song-player-button text-lg"
+          className="song-player-button text-xl"
           onClick={(e) => handleVolumeScroll(e)}
         >
           {renderVolumeButton()}
         </button>
         <span className="song-player-button text-sm">{volume}</span>
       </div>
+      <Link to="/queue">
+        <div className="song-player-button text-2xl">
+          <MdOutlineQueueMusic />
+        </div>
+      </Link>
     </div>
+  );
+};
+
+const AudioPlayer = (props) => {
+  return (
+    <audio
+      id="audioplayer"
+      className="w-full"
+      src={props.src}
+      loop={props.loop}
+      contextMenu
+      // controlsList="dance"
+      // controls
+      type="audio/mpeg"
+      preload="metadata"
+      hidden
+      aria-hidden
+    ></audio>
   );
 };

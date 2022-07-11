@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 type Song = {
   songName: string;
@@ -67,7 +67,7 @@ interface AlbumProp {
 }
 const Dashboard: React.FunctionComponent<AlbumProp> = (props) => {
   return (
-    <div className="relative left-64 z-[-100] h-screen overflow-scroll text-white bg-mygrey-600 pt-4">
+    <div>
       {albums.map((album) => {
         return <SongList album={album}></SongList>;
       })}
@@ -99,21 +99,30 @@ interface IProp {
 }
 
 const SongCard: React.FunctionComponent<IProp> = (props) => {
+  const [play, setPlay] = useState(false);
+
+  function handleCardClick() {
+    setPlay(!play);
+  }
   return (
-    <span className="border rounded p-2 flex flex-col text-left h-64 w-48">
-      <img
-        className="h-40 w-40 border rounded self-center"
-        src={props.song.imgUrl}
-        alt={props.song.songName.toLowerCase()}
-      ></img>
-      <span className="pl-2 flex flex-col">
-        <span className="capitalize">{props.song.songName}</span>
-        <span className="text-sm text-gray-400">{props.song.artist}</span>
-        <span className="text-xs font-semibold text-gray-400">
-          {props.song.description}
+    <button onClick={handleCardClick}>
+      <span className="border rounded p-2 flex flex-col text-left h-64 w-48">
+        <div className="h-42 w-42  self-center">
+          <img
+            className="album-image rounded h-40 w-40 m-1"
+            src={props.song.imgUrl}
+            alt={props.song.songName.toLowerCase()}
+          ></img>
+        </div>
+        <span className="pl-2 flex flex-col">
+          <span className="capitalize">{props.song.songName}</span>
+          <span className="text-sm text-gray-400">{props.song.artist}</span>
+          <span className="text-xs font-semibold text-gray-400">
+            {props.song.description}
+          </span>
         </span>
       </span>
-    </span>
+    </button>
   );
 };
 
