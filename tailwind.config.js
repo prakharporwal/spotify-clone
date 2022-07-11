@@ -11,6 +11,10 @@ module.exports = {
       gridTemplateColumns: { player: "1fr 2fr 1fr" },
       colors: {
         mygreen: "#1ed760",
+        mygrey: {
+          400: "#535353",
+          600: "#121212",
+        },
       },
       screens: {
         tall: { raw: "(min-height: 800px)" },

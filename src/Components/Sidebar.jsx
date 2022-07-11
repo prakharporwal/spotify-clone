@@ -42,6 +42,24 @@ const Sidebar = (props) => {
           <li className="py-1">
             <button className="sidebar-button">Dancer</button>
           </li>
+          <li className="py-1">
+            <button className="sidebar-button">Disco</button>
+          </li>
+          <li className="py-1">
+            <button className="sidebar-button">Dancer</button>
+          </li>
+          <li className="py-1">
+            <button className="sidebar-button">Disco</button>
+          </li>
+          <li className="py-1">
+            <button className="sidebar-button">Dancer</button>
+          </li>
+          <li className="py-1">
+            <button className="sidebar-button">Disco</button>
+          </li>
+          <li className="py-1">
+            <button className="sidebar-button">Dancer</button>
+          </li>
         </ul>
       </div>
     </div>
