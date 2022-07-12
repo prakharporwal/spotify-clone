@@ -21,12 +21,12 @@ const SongPlayer: React.FunctionComponent<any> = (props) => {
   }
 
   return (
-    <section className="song-player-bar grid grid-cols-player bg-mygrey-600 fixed bottom-0 w-screen h-24 text-white border border-mygrey-800">
-      <div className="flex">
+    <section className="song-player-bar grid grid-cols-player bg-mygrey-700 fixed bottom-0 w-screen h-24 text-white border-mygrey-800">
+      <div className="flex mx-4">
         <div className="mx-4 h-16 w-16 self-center">
           <img src="images/song-mix.jpg" alt={"Song Name"}></img>
         </div>
-        <div className="flex flex-col py-4 px-0 gap-1 w-80">
+        <div className="flex flex-col py-4 px-0 gap-1 w-64 md:w-44 sm:w-32">
           <span className="block text-sm mt-2 overflow-hidden text-ellipsis">
             Song Name
           </span>
@@ -34,20 +34,18 @@ const SongPlayer: React.FunctionComponent<any> = (props) => {
             Artist, Prakhar Porwal, Nice Person, Amitabh
           </span>
         </div>
-
-        <button
-          title="Like"
-          className="song-player-button py-4 text-lg"
-          onClick={handleLikeClick}
-        >
-          {liked ? <RiHeartFill className="text-mygreen" /> : <RiHeartLine />}
-        </button>
-        <button
-          title="Picture in Picture"
-          className="song-player-button py-4 text-lg"
-        >
-          <MdOutlinePictureInPictureAlt />
-        </button>
+        <div className="text-lg flex gap-2">
+          <button
+            title="Like"
+            className="song-player-button "
+            onClick={handleLikeClick}
+          >
+            {liked ? <RiHeartFill className="text-mygreen" /> : <RiHeartLine />}
+          </button>
+          <button title="Picture in Picture" className="song-player-button">
+            <MdOutlinePictureInPictureAlt />
+          </button>
+        </div>
       </div>
 
       <div>
@@ -157,8 +155,8 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
 
   return (
     <>
-      <AudioPlayer loop={repeat !== DISABLED} src={"songs/madhanya.mp3"} />
-      <section className="player-controls px-12 m-2 grid grid-flow-col">
+      <section className="player-controls px-8 flex gap-4 justify-around text-4xl py-1">
+        <AudioPlayer loop={repeat !== DISABLED} src={"songs/madhanya.mp3"} />
         <button
           title="Enable Shuffle"
           className="shuffle-toggle-button song-player-button py-4 text-xl"
@@ -169,32 +167,24 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
 
         <button
           title="Previous"
-          className="song-player-button py-4 text-3xl"
+          className="song-player-button py-2 text-3xl"
           onClick={restart}
         >
           <MdSkipPrevious />
         </button>
 
         {playing ? (
-          <button
-            title="Pause"
-            className="py-4 text-4xl"
-            onClick={handlePlayingClick}
-          >
+          <button title="Pause" onClick={handlePlayingClick}>
             <AiFillPauseCircle />
           </button>
         ) : (
-          <button
-            title="Play"
-            className="py-4 text-4xl"
-            onClick={handlePlayingClick}
-          >
+          <button title="Play" onClick={handlePlayingClick}>
             <AiFillPlayCircle />
           </button>
         )}
         <button
           title="Next"
-          className="song-player-button py-4 text-3xl"
+          className="song-player-button text-3xl"
           onClick={restart}
         >
           <MdSkipNext />
@@ -203,7 +193,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         {repeat === DISABLED ? (
           <button
             title="Enable Repeat"
-            className="song-player-button py-4 text-xl"
+            className="song-player-button text-xl"
             onClick={handleRepeatButtonClick}
           >
             <TbRepeat />
@@ -211,7 +201,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         ) : repeat === ENABLED ? (
           <button
             title="Repeat Once"
-            className="song-player-button py-4 text-xl"
+            className="song-player-button text-xl"
             onClick={handleRepeatButtonClick}
           >
             <TbRepeat className="text-mygreen" />
@@ -219,7 +209,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         ) : (
           <button
             title="Disable Repeat"
-            className="song-player-button py-4 text-xl"
+            className="song-player-button text-xl"
             onClick={handleRepeatButtonClick}
           >
             <TbRepeatOnce className="text-mygreen" />
@@ -295,11 +285,11 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
   }
 
   return (
-    <div className="other-controls px-8 mt-8 grid grid-flow-col">
-      <div className="flex gap-2 ">
+    <div className="other-controls px-8 mt-8 flex justify-evenly">
+      <div className="flex gap-2">
         <button
           title="Volume"
-          className="song-player-button text-xl"
+          className="song-player-button text-xl border"
           onClick={(e) => handleVolumeScroll(e)}
         >
           {renderVolumeButton()}
@@ -310,7 +300,7 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
         <span className="song-player-button text-sm">{volume}</span>
       </div>
       <Link to="queue">
-        <div className="song-player-button text-2xl">
+        <div className="song-player-button text-2xl self-center">
           <MdOutlineQueueMusic />
         </div>
       </Link>

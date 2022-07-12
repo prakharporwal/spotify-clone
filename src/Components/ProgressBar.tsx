@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ProgressBar.css";
 
 interface IProps {
@@ -12,15 +12,12 @@ const ProgressBar: React.FunctionComponent<IProps> = (props) => {
   let percent: number = props.progress * 100;
   percent = percent / props.total;
   console.log(percent, props);
+
+  const [part, setPart] = useState(percent.toString());
+  let item = "w-[" + part + "%]";
   return (
-    <div className="progress-bar border">
-      <span
-        className="inner-bar border"
-        style={{
-          display: "inline-block",
-          width: "60% !important",
-        }}
-      ></span>
+    <div className="progress-bar bg-mygrey-800 rounded h-1 w-full">
+      <div className={`inner-bar rounded bg-white h-1 ${item}`}></div>
     </div>
   );
 };
