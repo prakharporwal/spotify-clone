@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./Dashboard.css";
 
 type Song = {
   songName: string;
@@ -77,10 +78,12 @@ interface AlbumProp {
 }
 const Dashboard: React.FunctionComponent<AlbumProp> = (props) => {
   return (
-    <div className="h-full overflow-auto">
-      {albums.map((album) => {
-        return <SongList album={album}></SongList>;
-      })}
+    <div className="absolute left-64 z-[-100] h-[calc(100vh-6rem)] w-[calc(100vw-16rem)] text-white bg-mygrey-600 overflow-y-auto">
+      <div className="flex flex-col gap-4 p-4 m-4 relative right-4">
+        {albums.map((album) => {
+          return <SongList album={album}></SongList>;
+        })}
+      </div>
     </div>
   );
 };
@@ -91,11 +94,11 @@ interface SongsProp {
 
 const SongList: React.FunctionComponent<SongsProp> = (props) => {
   return (
-    <div className="w-full">
-      <span className="text-lg font-semibold p-8 capitalize">
+    <div className="song-list w-full overflow-x-auto">
+      <span className="text-lg font-semibold capitalize p-6">
         {props.album.name}
       </span>
-      <div className="m-4 flex flex-wrap gap-4 items-center overflow-x-auto h-64 w-full">
+      <div className="mx-4 gap-4 items-center whitespace-nowrap h-68 w-full">
         {props.album.songList.map((song) => {
           return <SongCard song={song} />;
         })}
@@ -115,7 +118,7 @@ const SongCard: React.FunctionComponent<IProp> = (props) => {
     setPlay(!play);
   }
   return (
-    <>
+    <div className="inline-block m-2">
       <div className="border rounded p-2 flex flex-col text-left w-48">
         <div className="h-42 w-42 self-center">
           <img
@@ -128,11 +131,11 @@ const SongCard: React.FunctionComponent<IProp> = (props) => {
           <span className="capitalize">{props.song.songName}</span>
           <span className="text-sm text-gray-400">{props.song.artist}</span>
           <span className="text-xs font-semibold text-gray-400">
-            {props.song.description}
+            {props.song.description || "Hello"}
           </span>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

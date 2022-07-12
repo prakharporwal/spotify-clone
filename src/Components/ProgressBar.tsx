@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import "./ProgressBar.css";
 
 interface IProps {
   progress: number;
@@ -10,24 +11,31 @@ const ProgressBar: React.FunctionComponent<IProps> = (props) => {
 
   let percent: number = props.progress * 100;
   percent = percent / props.total;
-
+  console.log(percent, props);
   return (
-    <div className="progress-bar rounded bg-mygrey-400 w-[100%]">
-      <InnerProgress percent={percent} />
+    <div className="progress-bar border">
+      <span
+        className="inner-bar border"
+        style={{
+          display: "inline",
+          width: "60% !important",
+        }}
+      >
+        welll
+      </span>
     </div>
   );
 };
 
-interface ProgressProps {
-  percent: number;
-}
+// interface ProgressProps {
+//   percent: number;
+// }
 
-const InnerProgress: React.FunctionComponent<ProgressProps> = (props) => {
-  useEffect(() => {}, [props.percent]);
+// const InnerProgress: React.FunctionComponent<ProgressProps> = (props) => {
+//   useEffect(() => {}, [props.percent]);
 
-  return (
-    <div className={`py-0.5 bg-white rounded w-[` + props.percent + `%]`}></div>
-  );
-};
+//   return (
+//
+// };
 
 export default ProgressBar;

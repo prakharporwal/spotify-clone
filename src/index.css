@@ -6,6 +6,10 @@
   @apply text-gray-400 hover:text-white;
 }
 
+.sidebar-button-active {
+  @apply text-white;
+}
+
 .song-player-button {
   @apply text-gray-400 hover:text-white;
 }

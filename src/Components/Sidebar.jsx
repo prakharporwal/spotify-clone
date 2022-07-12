@@ -1,19 +1,70 @@
 import React from "react";
-
+import { MdHomeFilled } from "react-icons/md";
+import { GoSearch } from "react-icons/go";
+import { BiLibrary } from "react-icons/bi";
+import { Link, useLocation } from "react-router-dom";
+import { ReactComponent as SpotifyIcon } from "../assets/svg/spotify-icon.svg";
 const Sidebar = (props) => {
+  const location = useLocation();
+
+  function getRoute() {
+    if (location.pathname === "/") {
+      return [true, false, false];
+    } else if (location.pathname === "/library") {
+      return [false, true, false];
+    } else if (location.pathname === "/search") {
+      return [false, false, true];
+    } else {
+      return [false, false, false];
+    }
+  }
+
+  const [isHome, isLibrary, isSearch] = getRoute();
+
   return (
     <div className="fixed top-0 left-0 h-screen p-4 w-64 bg-black">
-      <span className="text-2xl text-white font-weight">Spotify</span>
-      <div className="text-sm font-semibold h-1/3">
+      <Link to="/" className="block">
+        <div className="text-white scale-75 m-0 p-3 relative left-0">
+          <SpotifyIcon />
+        </div>
+      </Link>
+      <div className="text-[12px] font-semibold">
         <ul className="list-none p-3">
           <li className="py-1">
-            <button className="sidebar-button">Home</button>
+            <Link to="/">
+              <button
+                className={`${
+                  isHome ? "sidebar-button-active" : "sidebar-button"
+                } flex gap-4 items-center`}
+              >
+                <MdHomeFilled className="text-2xl inline" />
+                Home
+              </button>
+            </Link>
           </li>
           <li className="py-1">
-            <button className="sidebar-button">Search</button>
+            <Link to="/search">
+              <button
+                className={`${
+                  isSearch ? "sidebar-button-active" : "sidebar-button"
+                } flex gap-4 items-center`}
+              >
+                <GoSearch className="text-2xl inline" />
+                Search
+              </button>
+            </Link>
           </li>
           <li className="py-1">
-            <button className="sidebar-button">Your Library</button>
+            <Link to="/library">
+              <button
+                className={`${
+                  isLibrary ? "sidebar-button-active" : "sidebar-button"
+                } flex gap-4 items-center`}
+              >
+                <BiLibrary className="text-2xl inline" />
+                Your Library
+              </button>
+            </Link>
           </li>
         </ul>
         <ul className="list-none p-4">
@@ -21,7 +72,7 @@ const Sidebar = (props) => {
             <button className="sidebar-button">Create Playlist</button>
           </li>
           <li className="py-1">
-            <button className="sidebar-button">Like Songs</button>
+            <button className="sidebar-button">Liked Songs</button>
           </li>
           <li className="py-1">
             <button className="sidebar-button">Your Episodes</button>
