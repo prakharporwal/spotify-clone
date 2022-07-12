@@ -4,6 +4,9 @@ import { GoSearch } from "react-icons/go";
 import { BiLibrary } from "react-icons/bi";
 import { Link, useLocation } from "react-router-dom";
 import { ReactComponent as SpotifyIcon } from "../assets/svg/spotify-icon.svg";
+
+import "./Sidebar.css";
+
 const Sidebar = (props) => {
   const location = useLocation();
 
@@ -82,34 +85,51 @@ const Sidebar = (props) => {
       <div className="relative flex pt-3 items-center">
         <div className="flex-grow border-t border-gray-700"></div>
       </div>
-      <div className="playlist text-sm h-[50%]">
-        <ul className="p-4 h-[90%] overflow-y-auto">
-          <li className="py-1">
-            <button className="sidebar-button py-1">Arijit</button>
+      <div className="text-sm h-[50%] ">
+        <ul className="playlist p-4 h-[60%] overflow-y-auto">
+          <li>
+            <button className="sidebar-playlist-button">Arijit</button>
           </li>
-          <li className="py-1">
-            <button className="sidebar-button">Disco</button>
+          <li>
+            <button className="sidebar-playlist-button">
+              Disco my boi are too good to travels
+            </button>
           </li>
-          <li className="py-1">
-            <button className="sidebar-button">Dancer</button>
+          <li>
+            <button className="sidebar-playlist-button">Dancer</button>
           </li>
-          <li className="py-1">
-            <button className="sidebar-button">Disco</button>
+          <li>
+            <button className="sidebar-playlist-button">Disco</button>
           </li>
-          <li className="py-1">
-            <button className="sidebar-button">Dancer</button>
+          <li>
+            <button className="sidebar-playlist-button">Dancer</button>
           </li>
-          <li className="py-1">
-            <button className="sidebar-button">Disco</button>
+          <li>
+            <button className="sidebar-playlist-button">Disco</button>
           </li>
-          <li className="py-1">
-            <button className="sidebar-button">Dancer</button>
+          <li>
+            <button className="sidebar-playlist-button">Dancer</button>
           </li>
-          <li className="py-1">
-            <button className="sidebar-button">Disco</button>
+          <li>
+            <button className="sidebar-playlist-button">Disco</button>
           </li>
-          <li className="py-1">
-            <button className="sidebar-button">Dancer</button>
+          <li>
+            <button className="sidebar-playlist-button">Dancer</button>
+          </li>
+          <li>
+            <button className="sidebar-playlist-button">Disco</button>
+          </li>
+          <li>
+            <button className="sidebar-playlist-button">Dancer</button>
+          </li>
+          <li>
+            <button className="sidebar-playlist-button">Disco</button>
+          </li>
+          <li>
+            <button className="sidebar-playlist-button">Dancer</button>
+          </li>
+          <li>
+            <button className="sidebar-playlist-button">Disco</button>
           </li>
         </ul>
       </div>

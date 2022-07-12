@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Dashboard.css";
 
 type Song = {
@@ -21,7 +22,7 @@ const songList1 = [
     artist: "Michael Jackson",
   },
   {
-    songName: "BE HAPPY",
+    songName: "Be Happy",
     imgUrl: "images/song-mix.jpg",
     artist: "Michael Jackson",
   },
@@ -71,6 +72,7 @@ type Album = {
   songList: Song[];
   id: string;
   name: string;
+  link?: string;
 };
 
 interface AlbumProp {
@@ -78,8 +80,8 @@ interface AlbumProp {
 }
 const Dashboard: React.FunctionComponent<AlbumProp> = (props) => {
   return (
-    <div className="absolute left-64 z-[-100] h-[calc(100vh-6rem)] w-[calc(100vw-16rem)] text-white bg-mygrey-600 overflow-y-auto">
-      <div className="flex flex-col gap-4 p-4 m-4 relative right-4">
+    <div className="dashboard-box absolute left-64 z-[-100] h-[calc(100vh-6rem)] w-[calc(100vw-16rem)] text-white bg-mygrey-600 overflow-y-auto">
+      <div className="flex flex-col p-2 m-2">
         {albums.map((album) => {
           return <SongList album={album}></SongList>;
         })}
@@ -94,16 +96,20 @@ interface SongsProp {
 
 const SongList: React.FunctionComponent<SongsProp> = (props) => {
   return (
-    <div className="song-list w-full overflow-x-auto">
-      <span className="text-lg font-semibold capitalize p-6">
+    <>
+      <span className="px-4 pt-4 text-lg hover:underline font-semibold capitalize">
         {props.album.name}
       </span>
-      <div className="mx-4 gap-4 items-center whitespace-nowrap h-68 w-full">
+      {/* <Link to={props.album?.link}> */}
+      <button className="flex justify-end px-4 text-2xs hover:underline text-mygrey-200 font-semibold uppercase">
+        <Link to={"genre"}>see all</Link>
+      </button>
+      <div className="song-list flex p-4 gap-8 items-center whitespace-nowrap w-full overflow-x-auto h-68">
         {props.album.songList.map((song) => {
           return <SongCard song={song} />;
         })}
       </div>
-    </div>
+    </>
   );
 };
 
@@ -118,23 +124,29 @@ const SongCard: React.FunctionComponent<IProp> = (props) => {
     setPlay(!play);
   }
   return (
-    <div className="inline-block m-2">
-      <div className="border rounded p-2 flex flex-col text-left w-48">
-        <div className="h-42 w-42 self-center">
-          <img
-            className="album-image rounded h-40 w-40 m-1"
-            src={props.song.imgUrl}
-            alt={props.song.songName.toLowerCase()}
-          ></img>
+    <div className="song-card bg-mygrey-500 hover:bg-mygrey-700 inline-block shadow-slate-600 rounded">
+      <Link to="/playlist">
+        <div className="rounded p-4 flex flex-col text-left w-52">
+          <div className="h-46 w-46 self-center">
+            <img
+              className="album-image rounded h-44 w-44"
+              src={props.song.imgUrl}
+              alt={props.song.songName.toLowerCase()}
+            ></img>
+          </div>
+          <div className="px-4 py-2 flex flex-col">
+            <span className="capitalize font-semibold text-sm overflow-hidden text-ellipsis">
+              {props.song.songName}
+            </span>
+            <span className="artist-name text-xs text-gray-400 overflow-hidden text-ellipsis">
+              {props.song.artist}
+            </span>
+            {/* <span className="text-2xs font-semibold text-gray-400">
+              {props.song.description || "Hello"}
+            </span> */}
+          </div>
         </div>
-        <div className="pl-2 flex flex-col">
-          <span className="capitalize">{props.song.songName}</span>
-          <span className="text-sm text-gray-400">{props.song.artist}</span>
-          <span className="text-xs font-semibold text-gray-400">
-            {props.song.description || "Hello"}
-          </span>
-        </div>
-      </div>
+      </Link>
     </div>
   );
 };

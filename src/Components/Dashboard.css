@@ -1,8 +1,18 @@
 .song-list::-webkit-scrollbar {
   color: darkgray;
-  height: 2px;
+  height: 4px;
 }
 
 .song-list::-webkit-scrollbar-thumb {
   background-color: #484848;
+}
+
+.song-card {
+  transition: all 500ms;
+}
+
+.artist-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }

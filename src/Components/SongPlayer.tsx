@@ -24,7 +24,7 @@ const SongPlayer: React.FunctionComponent<any> = (props) => {
     <section className="song-player-bar grid grid-cols-player bg-mygrey-600 fixed bottom-0 w-screen h-24 text-white border border-mygrey-800 text-xs">
       <div className="flex gap-2">
         <div className="h-16 w-16 border self-center">
-          <img src="logo192.png" alt="songimg"></img>
+          <img src="images/song-mix.jpg" alt={"Song Name"}></img>
         </div>
         <div className="flex flex-col py-4 px-0 gap-1 w-80 overflow-x-hidden whitespace-nowrap">
           <span className="mt-2">Song Name</span>
@@ -142,10 +142,10 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   return (
     <>
       <AudioPlayer loop={repeat !== DISABLED} src={"songs/roz.mp3"} />
-      <section className="player-controls px-12 m-2 grid grid-flow-col border">
+      <section className="player-controls px-12 m-2 grid grid-flow-col">
         <button
           title="Enable Shuffle"
-          className="shuffle-toggle-button song-player-button py-4 text-xl border"
+          className="shuffle-toggle-button song-player-button py-4 text-xl"
           onClick={handleShuffleClick}
         >
           {shuffle ? <BiShuffle className="text-mygreen" /> : <BiShuffle />}
@@ -153,7 +153,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
 
         <button
           title="Previous"
-          className="song-player-button py-4 text-3xl border"
+          className="song-player-button py-4 text-3xl"
           onClick={restart}
         >
           <MdSkipPrevious />
@@ -162,7 +162,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         {playing ? (
           <button
             title="Pause"
-            className="py-4 text-4xl border"
+            className="py-4 text-4xl"
             onClick={handlePlayingClick}
           >
             <AiFillPauseCircle />
@@ -170,7 +170,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         ) : (
           <button
             title="Play"
-            className="py-4 text-4xl border"
+            className="py-4 text-4xl"
             onClick={handlePlayingClick}
           >
             <AiFillPlayCircle />
@@ -178,7 +178,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         )}
         <button
           title="Next"
-          className="song-player-button py-4 text-3xl border"
+          className="song-player-button py-4 text-3xl"
           onClick={restart}
         >
           <MdSkipNext />
@@ -187,7 +187,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         {repeat === DISABLED ? (
           <button
             title="Enable Repeat"
-            className="song-player-button py-4 text-xl border"
+            className="song-player-button py-4 text-xl"
             onClick={handleRepeatButtonClick}
           >
             <TbRepeat />
@@ -203,7 +203,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         ) : (
           <button
             title="Disable Repeat"
-            className="song-player-button py-4 text-xl border"
+            className="song-player-button py-4 text-xl"
             onClick={handleRepeatButtonClick}
           >
             <TbRepeatOnce className="text-mygreen" />
@@ -310,7 +310,7 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
       src={props.src}
       loop={props.loop}
       preload="metadata"
-      controls
+      // controls
       hidden
       aria-hidden
     ></audio>

@@ -3,11 +3,15 @@
 @tailwind utilities;
 
 .sidebar-button {
-  @apply text-gray-400 hover:text-white;
+  @apply text-mygrey-900 hover:text-white capitalize overflow-hidden text-ellipsis whitespace-nowrap border;
+}
+
+.sidebar-playlist-button {
+  @apply text-mygrey-900 hover:text-white capitalize overflow-hidden text-ellipsis whitespace-nowrap py-1 w-full text-left block;
 }
 
 .sidebar-button-active {
-  @apply text-white;
+  @apply text-white capitalize overflow-hidden text-ellipsis;
 }
 
 .song-player-button {

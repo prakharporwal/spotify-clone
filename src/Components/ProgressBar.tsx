@@ -17,12 +17,10 @@ const ProgressBar: React.FunctionComponent<IProps> = (props) => {
       <span
         className="inner-bar border"
         style={{
-          display: "inline",
+          display: "inline-block",
           width: "60% !important",
         }}
-      >
-        welll
-      </span>
+      ></span>
     </div>
   );
 };
