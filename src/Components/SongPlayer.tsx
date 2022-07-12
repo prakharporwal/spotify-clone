@@ -11,10 +11,9 @@ import {
 import { FiVolume1, FiVolumeX, FiVolume2, FiVolume } from "react-icons/fi";
 import { AiFillPlayCircle, AiFillPauseCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import ProgressBar from "./ProgressBar";
 
-let songqueue = [];
-
-const SongPlayer = (props) => {
+const SongPlayer: React.FunctionComponent<any> = (props) => {
   const [liked, setLiked] = useState(false);
 
   function handleLikeClick() {
@@ -57,7 +56,7 @@ const SongPlayer = (props) => {
   );
 };
 
-const PlayerControls = (props) => {
+const PlayerControls: React.FunctionComponent<any> = (props) => {
   const REPEATONE = "repeatone";
   const DISABLED = "disabled";
   const ENABLED = "enabled";
@@ -66,14 +65,46 @@ const PlayerControls = (props) => {
   const [repeat, setRepeat] = useState(DISABLED);
   const [shuffle, setShuffle] = useState(false);
 
+  const audioPlayer: HTMLAudioElement | null = document.getElementById(
+    "audioplayer"
+  ) as HTMLAudioElement;
+
   function play() {
-    let item = document.getElementById("audioplayer");
-    if (item !== null) item.play();
+    if (audioPlayer !== null) {
+      console.log("play song");
+      audioPlayer.play();
+    }
   }
 
   function pause() {
-    let item = document.getElementById("audioplayer");
-    if (item !== null) item.pause();
+    if (audioPlayer !== null) {
+      console.log("pause song");
+      audioPlayer.pause();
+    }
+  }
+
+  function restart() {
+    if (audioPlayer !== null) {
+      audioPlayer.currentTime = 0;
+      if (audioPlayer?.paused) {
+        audioPlayer?.play();
+        setPlaying(true);
+      }
+    }
+  }
+
+  function getCurrentTime() {
+    if (audioPlayer === null) {
+      return 0;
+    }
+    return audioPlayer.currentTime;
+  }
+
+  function getSongDuration() {
+    if (audioPlayer === null) {
+      return 1; // should not be zero for avoiding 0/0 division
+    }
+    return audioPlayer.duration;
   }
 
   function handlePlayingClick() {
@@ -88,12 +119,15 @@ const PlayerControls = (props) => {
   function handleRepeatButtonClick() {
     switch (repeat) {
       case DISABLED:
+        console.log("loop enabled");
         setRepeat(ENABLED);
         break;
       case ENABLED:
+        console.log("loop one");
         setRepeat(REPEATONE);
         break;
       case REPEATONE:
+        console.log("loop disabled");
         setRepeat(DISABLED);
         break;
       default:
@@ -107,17 +141,21 @@ const PlayerControls = (props) => {
 
   return (
     <>
-      <AudioPlayer loop={repeat === REPEATONE} src={"songs/roz.mp3"} />
+      <AudioPlayer loop={repeat !== DISABLED} src={"songs/roz.mp3"} />
       <section className="player-controls px-12 m-2 grid grid-flow-col grid-cols-5">
         <button
           title="Enable Shuffle"
-          className="song-player-button py-4 text-xl"
+          className="shuffle-toggle-button song-player-button py-4 text-xl"
           onClick={handleShuffleClick}
         >
-          {shuffle ? <BiShuffle /> : <BiShuffle className="text-mygreen" />}
+          {shuffle ? <BiShuffle className="text-mygreen" /> : <BiShuffle />}
         </button>
 
-        <button title="Previous" className="song-player-button py-4 text-3xl">
+        <button
+          title="Previous"
+          className="song-player-button py-4 text-3xl"
+          onClick={restart}
+        >
           <MdSkipPrevious />
         </button>
 
@@ -138,7 +176,11 @@ const PlayerControls = (props) => {
             <AiFillPlayCircle />
           </button>
         )}
-        <button title="Next" className="song-player-button py-4 text-3xl">
+        <button
+          title="Next"
+          className="song-player-button py-4 text-3xl"
+          onClick={restart}
+        >
           <MdSkipNext />
         </button>
 
@@ -168,33 +210,52 @@ const PlayerControls = (props) => {
           </button>
         )}
       </section>
+      <div>
+        <ProgressBar progress={getCurrentTime()} total={getSongDuration()} />
+      </div>
+      {/* <span>{getCurrentTime()}</span>
+        <span>{getSongDuration()}</span> */}
     </>
   );
 };
 
 export default SongPlayer;
 
-const OtherControls = (props) => {
+const OtherControls: React.FunctionComponent<any> = (props) => {
   const MUTE = 0;
   const VOLMIN = 25;
   const VOLMID = 50;
   const VOLMAX = 100;
 
-  const [volume, setVolume] = useState(VOLMAX);
+  const [volume, setVolume] = useState<number>(VOLMAX);
 
-  function handleVolumeScroll(e) {
-    console.log(e);
+  let audioPlayer: HTMLAudioElement | null = document.getElementById(
+    "audioplayer"
+  ) as HTMLAudioElement;
+
+  function adjustVolume(vol: number) {
+    if (audioPlayer !== null) {
+      console.log("vol", vol);
+      audioPlayer.volume = vol / 100;
+    }
+  }
+
+  function handleVolumeScroll(e: React.MouseEvent<HTMLButtonElement>) {
     switch (volume) {
       case VOLMAX:
+        adjustVolume(MUTE);
         setVolume(MUTE);
         break;
       case VOLMID:
+        adjustVolume(VOLMAX);
         setVolume(VOLMAX);
         break;
       case VOLMIN:
+        adjustVolume(VOLMID);
         setVolume(VOLMID);
         break;
       case MUTE:
+        adjustVolume(VOLMIN);
         setVolume(VOLMIN);
         break;
       default:
@@ -206,7 +267,6 @@ const OtherControls = (props) => {
     switch (volume) {
       case MUTE:
         return <FiVolumeX />;
-        break;
       case VOLMAX:
         return <FiVolume2 />;
       case VOLMID:
@@ -219,7 +279,7 @@ const OtherControls = (props) => {
   }
   return (
     <div className="other-controls px-8 mt-8 grid grid-flow-col">
-      <div className="flex gap-2">
+      <div className="flex gap-2 ">
         <button
           title="Volume"
           className="song-player-button text-xl"
@@ -227,6 +287,9 @@ const OtherControls = (props) => {
         >
           {renderVolumeButton()}
         </button>
+        <div className="volume-bar self-center sm:w-16 w-24">
+          <ProgressBar progress={volume} total={100} />
+        </div>
         <span className="song-player-button text-sm">{volume}</span>
       </div>
       <Link to="/queue">
@@ -238,18 +301,15 @@ const OtherControls = (props) => {
   );
 };
 
-const AudioPlayer = (props) => {
+const AudioPlayer: React.FunctionComponent<any> = (props) => {
   return (
     <audio
       id="audioplayer"
       className="w-full"
       src={props.src}
       loop={props.loop}
-      contextMenu
-      // controlsList="dance"
-      // controls
-      type="audio/mpeg"
       preload="metadata"
+      // controls
       hidden
       aria-hidden
     ></audio>
