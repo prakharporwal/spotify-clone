@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .sidebar-button {
-  @apply text-mygrey-900 hover:text-white capitalize overflow-hidden text-ellipsis whitespace-nowrap border;
+  @apply text-mygrey-900 hover:text-white capitalize overflow-hidden text-ellipsis whitespace-nowrap;
 }
 
 .sidebar-playlist-button {

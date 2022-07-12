@@ -1,6 +1,6 @@
 .playlist::-webkit-scrollbar {
   color: darkgray;
-  height: 4px;
+  width: 4px;
 }
 
 .playlist::-webkit-scrollbar-thumb {

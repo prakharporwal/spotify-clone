@@ -21,14 +21,18 @@ const SongPlayer: React.FunctionComponent<any> = (props) => {
   }
 
   return (
-    <section className="song-player-bar grid grid-cols-player bg-mygrey-600 fixed bottom-0 w-screen h-24 text-white border border-mygrey-800 text-xs">
-      <div className="flex gap-2">
-        <div className="h-16 w-16 border self-center">
+    <section className="song-player-bar grid grid-cols-player bg-mygrey-600 fixed bottom-0 w-screen h-24 text-white border border-mygrey-800">
+      <div className="flex">
+        <div className="mx-4 h-16 w-16 self-center">
           <img src="images/song-mix.jpg" alt={"Song Name"}></img>
         </div>
-        <div className="flex flex-col py-4 px-0 gap-1 w-80 overflow-x-hidden whitespace-nowrap">
-          <span className="mt-2">Song Name</span>
-          <span>Artist, Prakhar Porwal, Nice Person, Amitabh</span>
+        <div className="flex flex-col py-4 px-0 gap-1 w-80">
+          <span className="block text-sm mt-2 overflow-hidden text-ellipsis">
+            Song Name
+          </span>
+          <span className="text-xs">
+            Artist, Prakhar Porwal, Nice Person, Amitabh
+          </span>
         </div>
 
         <button
@@ -65,11 +69,10 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   const [repeat, setRepeat] = useState(DISABLED);
   const [shuffle, setShuffle] = useState(false);
 
-  const audioPlayer: HTMLAudioElement | null = document.getElementById(
-    "audioplayer"
-  ) as HTMLAudioElement;
-
   function play() {
+    const audioPlayer: HTMLAudioElement | null = document.getElementById(
+      "audioplayer"
+    ) as HTMLAudioElement;
     if (audioPlayer !== null) {
       console.log("play song");
       audioPlayer.play();
@@ -77,6 +80,9 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   }
 
   function pause() {
+    const audioPlayer: HTMLAudioElement | null = document.getElementById(
+      "audioplayer"
+    ) as HTMLAudioElement;
     if (audioPlayer !== null) {
       console.log("pause song");
       audioPlayer.pause();
@@ -84,6 +90,9 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   }
 
   function restart() {
+    const audioPlayer: HTMLAudioElement | null = document.getElementById(
+      "audioplayer"
+    ) as HTMLAudioElement;
     if (audioPlayer !== null) {
       audioPlayer.currentTime = 0;
       if (audioPlayer?.paused) {
@@ -94,6 +103,9 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   }
 
   function getCurrentTime() {
+    const audioPlayer: HTMLAudioElement | null = document.getElementById(
+      "audioplayer"
+    ) as HTMLAudioElement;
     if (audioPlayer === null) {
       return 0;
     }
@@ -101,6 +113,9 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   }
 
   function getSongDuration() {
+    const audioPlayer: HTMLAudioElement | null = document.getElementById(
+      "audioplayer"
+    ) as HTMLAudioElement;
     if (audioPlayer === null) {
       return 1; // should not be zero for avoiding 0/0 division
     }
@@ -108,6 +123,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   }
 
   function handlePlayingClick() {
+    console.log("playing", playing);
     if (playing) {
       pause();
     } else {
@@ -141,7 +157,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
 
   return (
     <>
-      <AudioPlayer loop={repeat !== DISABLED} src={"songs/roz.mp3"} />
+      <AudioPlayer loop={repeat !== DISABLED} src={"songs/madhanya.mp3"} />
       <section className="player-controls px-12 m-2 grid grid-flow-col">
         <button
           title="Enable Shuffle"

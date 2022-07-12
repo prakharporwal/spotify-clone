@@ -25,12 +25,12 @@ const Sidebar = (props) => {
   const [isHome, isLibrary, isSearch] = getRoute();
 
   return (
-    <div className="fixed top-0 left-0 h-screen p-4 w-64 bg-black">
-      <Link to="/" className="block">
-        <div className="text-white scale-75 m-0 p-3 relative left-0">
-          <SpotifyIcon />
-        </div>
-      </Link>
+    <div className="fixed top-0 left-0 h-screen p-4 w-64 bg-black border">
+      <div className="text-white border">
+        <Link to="/">
+          <SpotifyIcon className="scale-[60%]" />
+        </Link>
+      </div>
       <div className="text-[12px] font-semibold">
         <ul className="list-none p-3">
           <li className="py-1">
@@ -83,9 +83,9 @@ const Sidebar = (props) => {
         </ul>
       </div>
       <div className="relative flex pt-3 items-center">
-        <div className="flex-grow border-t border-gray-700"></div>
+        <div className="flex-grow border-t border-gray-600"></div>
       </div>
-      <div className="text-sm h-[50%] ">
+      <div className="text-sm h-[50%] pt-2">
         <ul className="playlist p-4 h-[60%] overflow-y-auto">
           <li>
             <button className="sidebar-playlist-button">Arijit</button>
