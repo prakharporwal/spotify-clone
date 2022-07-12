@@ -2,72 +2,59 @@ import React from "react";
 import { MdHomeFilled } from "react-icons/md";
 import { GoSearch } from "react-icons/go";
 import { BiLibrary } from "react-icons/bi";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactComponent as SpotifyIcon } from "../assets/svg/spotify-icon.svg";
 
 import "./Sidebar.css";
 
 const Sidebar = (props) => {
-  const location = useLocation();
-
-  function getRoute() {
-    if (location.pathname === "/") {
-      return [true, false, false];
-    } else if (location.pathname === "/library") {
-      return [false, true, false];
-    } else if (location.pathname === "/search") {
-      return [false, false, true];
-    } else {
-      return [false, false, false];
-    }
-  }
-
-  const [isHome, isLibrary, isSearch] = getRoute();
-
   return (
-    <div className="fixed top-0 left-0 h-screen p-4 w-64 bg-black border">
-      <div className="text-white border">
-        <Link to="/">
+    <div className="fixed top-0 left-0 h-screen p-4 w-64 bg-black">
+      <div className="text-white ">
+        <Link to="">
           <SpotifyIcon className="scale-[60%]" />
         </Link>
       </div>
       <div className="text-[12px] font-semibold">
         <ul className="list-none p-3">
           <li className="py-1">
-            <Link to="/">
-              <button
-                className={`${
-                  isHome ? "sidebar-button-active" : "sidebar-button"
-                } flex gap-4 items-center`}
-              >
+            <NavLink
+              to=""
+              className={({ isActive }) =>
+                isActive ? "sidebar-button-active" : "sidebar-button"
+              }
+            >
+              <button className="flex gap-4 items-center">
                 <MdHomeFilled className="text-2xl inline" />
                 Home
               </button>
-            </Link>
+            </NavLink>
           </li>
           <li className="py-1">
-            <Link to="/search">
-              <button
-                className={`${
-                  isSearch ? "sidebar-button-active" : "sidebar-button"
-                } flex gap-4 items-center`}
-              >
+            <NavLink
+              to="search"
+              className={({ isActive }) =>
+                isActive ? "sidebar-button-active" : "sidebar-button"
+              }
+            >
+              <button className="flex gap-4 items-center">
                 <GoSearch className="text-2xl inline" />
                 Search
               </button>
-            </Link>
+            </NavLink>
           </li>
           <li className="py-1">
-            <Link to="/library">
-              <button
-                className={`${
-                  isLibrary ? "sidebar-button-active" : "sidebar-button"
-                } flex gap-4 items-center`}
-              >
+            <NavLink
+              to="library"
+              className={({ isActive }) =>
+                isActive ? "sidebar-button-active" : "sidebar-button"
+              }
+            >
+              <button className="flex gap-4 items-center">
                 <BiLibrary className="text-2xl inline" />
                 Your Library
               </button>
-            </Link>
+            </NavLink>
           </li>
         </ul>
         <ul className="list-none p-4">

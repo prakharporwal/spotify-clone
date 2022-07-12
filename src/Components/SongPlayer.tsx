@@ -309,7 +309,7 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
         </div>
         <span className="song-player-button text-sm">{volume}</span>
       </div>
-      <Link to="/queue">
+      <Link to="queue">
         <div className="song-player-button text-2xl">
           <MdOutlineQueueMusic />
         </div>

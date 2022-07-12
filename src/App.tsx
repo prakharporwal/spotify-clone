@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./Pages/LoginPage";
 import SongQueue from "./Components/SongQueue";
 import Dashboard from "./Components/Dashboard";
+import Playlist from "./Components/Playlist";
 
 function App() {
   return (
@@ -21,9 +22,17 @@ function App() {
       </BrowserRouter> */}
 
       <BrowserRouter>
-        <MainPage>
-          <Dashboard album={[]}></Dashboard>{" "}
-        </MainPage>
+        <Routes>
+          <Route path="/" element={<MainPage />}>
+            <Route index element={<Dashboard />}></Route>
+            <Route path="playlist" element={<Playlist />}></Route>
+            <Route path="library" element={<Dashboard />}></Route>
+            <Route path="search" element={<Dashboard />}></Route>
+            <Route path="queue" element={<SongQueue />}></Route>
+          </Route>
+
+          <Route path="/login" element={<LoginPage />}></Route>
+        </Routes>
       </BrowserRouter>
     </div>
   );

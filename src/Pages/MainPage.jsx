@@ -1,14 +1,15 @@
 import React from "react";
 import Sidebar from "../Components/Sidebar";
 import SongPlayer from "../Components/SongPlayer";
+import { Outlet } from "react-router-dom";
 
 const MainPage = (props) => {
   return (
-    <div>
+    <>
       <Sidebar />
       <SongPlayer />
-      {props.children}
-    </div>
+      <Outlet />
+    </>
   );
 };
 

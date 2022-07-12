@@ -1,6 +1,6 @@
 .song-list::-webkit-scrollbar {
   color: darkgray;
-  height: 4px;
+  height: 1px;
 }
 
 .song-list::-webkit-scrollbar-thumb {
@@ -8,7 +8,19 @@
 }
 
 .song-card {
-  transition: all 500ms;
+  transition: all 500ms ease-in;
+}
+
+.play-song-card {
+  visibility: hidden;
+  transition: all 200ms ease-in;
+  opacity: 0;
+}
+
+.song-card:hover .play-song-card {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(-0.5rem);
 }
 
 .artist-name {
