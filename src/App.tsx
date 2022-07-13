@@ -21,7 +21,7 @@ function App() {
         </Routes>
       </BrowserRouter> */}
 
-      <BrowserRouter>
+      <BrowserRouter basename="/spotify-clone">
         <Routes>
           <Route element={<MainPage />}>
             <Route index element={<Dashboard />}></Route>
