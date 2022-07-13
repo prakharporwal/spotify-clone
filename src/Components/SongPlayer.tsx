@@ -156,7 +156,10 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   return (
     <>
       <section className="player-controls px-8 flex gap-4 justify-around text-4xl py-1">
-        <AudioPlayer loop={repeat !== DISABLED} src={"songs/madhanya.mp3"} />
+        <AudioPlayer
+          loop={repeat !== DISABLED}
+          src={"songs/kho-gaye-hum-kahan.mp3"}
+        />
         <button
           title="Enable Shuffle"
           className="shuffle-toggle-button song-player-button py-4 text-xl"
