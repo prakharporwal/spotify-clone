@@ -292,7 +292,7 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
       <div className="flex gap-2">
         <button
           title="Volume"
-          className="song-player-button text-xl border"
+          className="song-player-button text-xl"
           onClick={(e) => handleVolumeScroll(e)}
         >
           {renderVolumeButton()}
