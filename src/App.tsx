@@ -23,7 +23,7 @@ function App() {
 
       <BrowserRouter>
         <Routes>
-          <Route path="/spotify-clone" element={<MainPage />}>
+          <Route element={<MainPage />}>
             <Route index element={<Dashboard />}></Route>
             <Route path="playlist" element={<Playlist />}></Route>
             <Route path="library" element={<Dashboard />}></Route>
