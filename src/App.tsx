@@ -31,7 +31,7 @@ function App() {
             <Route path="queue" element={<SongQueue />}></Route>
           </Route>
 
-          <Route path="/spotify-clone/login" element={<LoginPage />}></Route>
+          <Route path="/login" element={<LoginPage />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
