@@ -9,6 +9,9 @@ module.exports = {
   mode: "development",
   entry: "./src/index.js",
   devtool: "inline-source-map",
+  devserver: {
+    historyApiFallback: true,
+  },
   module: {
     rules: [
       // First Rule
