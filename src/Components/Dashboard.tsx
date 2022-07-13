@@ -130,7 +130,7 @@ const SongCard: React.FunctionComponent<IProp> = (props) => {
     <div className="song-card bg-mygrey-500 hover:bg-mygrey-700 inline-block shadow-slate-600 rounded">
       <Link to="/playlist">
         <div className="rounded p-4 flex flex-col text-left w-52 relative">
-          <button className="play-song-card bg-black rounded-[50%] absolute right-6 bottom-[4.5rem]">
+          <button className="play-song-card bg-mygrey-600 rounded-[50%] absolute right-6 bottom-[4.5rem]">
             {play ? (
               <MdPauseCircleFilled className="text-mygreen text-5xl" />
             ) : (
