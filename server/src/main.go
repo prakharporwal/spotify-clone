@@ -9,6 +9,7 @@ import (
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
 	"github.com/prakharporwal/spotify-backend/api"
+	"github.com/prakharporwal/spotify-backend/env"
 	"github.com/prakharporwal/spotify-backend/klogger"
 )
 
@@ -17,12 +18,22 @@ var apiGatewayRequest events.APIGatewayProxyRequest
 var userName string
 
 func init() {
-	// gin.SetMode(gin.ReleaseMode)
+	gin.SetMode(env.GinMode)
 }
 
 func main() {
-	klogger.Info("Hello Made a Update!")
-	lambda.Start(handler)
+	if env.AppEnv == "localhost" {
+		server := NewServer()
+		defer server.Stop()
+		err := server.Start()
+		if err != nil {
+			klogger.Error(err)
+			return
+		}
+	} else {
+		klogger.Info("Hello Lambda Started!")
+		lambda.Start(handler)
+	}
 }
 
 func handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -46,19 +57,25 @@ func handlerInternal(ctx context.Context, req events.APIGatewayProxyRequest) (ev
 	apiGatewayRequest = req
 
 	if ginLambda == nil {
-		setGinLambda()
+		initGinLambda()
 	}
 
 	return ginLambda.ProxyWithContext(ctx, req)
 }
 
-func setGinLambda() {
+func initRouter() *gin.Engine {
 	klogger.Info("Gin cold start")
 	r := gin.Default()
+
+	r.Use(CORSMiddleware())
 
 	r.GET("/artist", api.GetArtist)
 	r.GET("/album", api.GetAlbum)
 	r.GET("/song", api.GetSong)
+	return r
+}
 
+func initGinLambda() {
+	r := initRouter()
 	ginLambda = ginadapter.New(r)
 }

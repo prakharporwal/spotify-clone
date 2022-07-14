@@ -6,6 +6,7 @@ require (
 	github.com/aws/aws-lambda-go v1.32.1
 	github.com/awslabs/aws-lambda-go-api-proxy v0.13.3
 	github.com/gin-gonic/gin v1.8.1
+	github.com/lib/pq v1.10.6
 )
 
 require (

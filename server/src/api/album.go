@@ -4,13 +4,13 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/prakharporwal/spotify-backend/db"
 	"github.com/prakharporwal/spotify-backend/klogger"
 	"github.com/prakharporwal/spotify-backend/models"
 )
 
 func GetAlbum(ctx *gin.Context) {
-
-	klogger.Info("inside GetArtist!")
+	klogger.Info("inside GetAlbum!")
 
 	songList1 := []models.Song{
 		{
@@ -37,5 +37,15 @@ func GetAlbum(ctx *gin.Context) {
 			Songs: songList1,
 		},
 	}
-	ctx.JSON(http.StatusOK, res)
+
+	album, err := db.GetAllAlbums()
+	// network call lag
+	// song, err := db.GetSongsFromIdList([]int{1, 2, 3})
+
+	if err != nil {
+		klogger.Error(err)
+		ctx.JSON(http.StatusInternalServerError, res)
+	}
+
+	ctx.JSON(http.StatusOK, album)
 }

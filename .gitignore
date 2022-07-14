@@ -26,3 +26,7 @@ yarn-error.log*
 
 *.zip
 server/src/bin/*
+
+.vscode/
+
+**/env.go

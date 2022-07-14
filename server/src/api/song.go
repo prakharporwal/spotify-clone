@@ -9,6 +9,5 @@ import (
 
 func GetSong(ctx *gin.Context) {
 	klogger.Info("inside GetArtist!")
-
 	ctx.JSON(http.StatusOK, "hello")
 }

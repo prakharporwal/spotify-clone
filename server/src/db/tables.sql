@@ -1,37 +1,36 @@
 -- primary tables start with p
 create table p_song (
-                        id int8 primary key ,
-                        name varchar,
-                        image_url varchar,
-                        artists_id int8[],
-                        created_at timestamptz default now(),
-                        updated_at timestamptz default now()
+    id int8 primary key ,
+    name varchar,
+    image_url varchar,
+    artists_id int8[],
+    created_at timestamptz default now(),
+    updated_at timestamptz default now()
 );
 
 CREATE TYPE USER_TYPE AS ENUM ('PREMIUM', 'STUDENT', 'NORMAL');
 create table p_user(
-                       id int8 primary key ,
-                       name varchar,
-                       user_type USER_TYPE,
-                       email varchar,
-                       password varchar,
-                       is_verified boolean,
-                       created_at timestamptz default now(),
-                       updated_at timestamptz default now()
+    email varchar primary key ,
+    name varchar,
+    user_type USER_TYPE,
+    password varchar,
+    is_verified boolean,
+    created_at timestamptz default now(),
+    updated_at timestamptz default now()
 );
 
 create table p_album(
-                        id int8 primary key,
-                        name varchar,
-                        image_url varchar,
-                        is_public boolean,
-                        songs_id int8[],
-                        created_by int8,
-                        created_at timestamptz default now(),
-                        updated_at timestamptz default now(),
-                        CONSTRAINT fk_user
-                            FOREIGN KEY (created_by)
-                                REFERENCES p_user(id)
+    id int8 primary key,
+    name varchar,
+    image_url varchar,
+    is_public boolean,
+    songs_id int8[],
+    created_by varchar,
+    created_at timestamptz default now(),
+    updated_at timestamptz default now(),
+    CONSTRAINT fk_user
+        FOREIGN KEY (created_by)
+            REFERENCES p_user(email)
 );
 
 create table p_artist
@@ -39,12 +38,9 @@ create table p_artist
     id         int8  primary key,
     name       varchar,
     image_url  varchar,
-    album_id int8,
+    album_id   int8[],
     created_at timestamptz default now(),
-    updated_at timestamptz default now(),
-    CONSTRAINT fk_album
-        FOREIGN KEY(album_id)
-            REFERENCES p_album(id)
+    updated_at timestamptz default now()
 );
 
 --- INDEX ----
