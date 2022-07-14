@@ -54,8 +54,8 @@ const songList1 = [
 const songList2 = [...songList1];
 
 type Album = {
-  songs: Song[];
   id: string;
+  songs: Song[];
   name: string;
   image_url?: string;
 };
@@ -111,7 +111,7 @@ const Dashboard: React.FunctionComponent<any> = (props) => {
           console.log(err);
         });
     }
-    getAlbums();
+    // getAlbums();
     // let alb = JSON.parse(data) as Album[];
   }, []);
 
