@@ -1,89 +1,123 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdPauseCircleFilled, MdPlayCircleFilled } from "react-icons/md";
 import { Link } from "react-router-dom";
+import Constants from "./Constants";
+
 import "./Dashboard.css";
+import { resolve } from "path";
 
 type Song = {
-  songName: string;
-  imgUrl: string;
+  name: string;
+  image_url: string;
   artist: string;
   description?: string;
 };
 
 const songList1 = [
   {
-    songName: "NCS",
-    imgUrl: "images/song-best.jpg",
+    name: "NCS",
+    image_url: "images/song-best.jpg",
     artist: "Arijit Singh",
     description: "The Hits Of Arijit",
   },
   {
-    songName: "KillerCode",
-    imgUrl: "images/song-art.jpg",
+    name: "KillerCode",
+    image_url: "images/song-art.jpg",
     artist: "Michael Jackson",
   },
   {
-    songName: "Be Happy",
-    imgUrl: "images/song-mix.jpg",
+    name: "Be Happy",
+    image_url: "images/song-mix.jpg",
     artist: "Michael Jackson",
   },
   {
-    songName: "Tum Bhi",
-    imgUrl: "images/sing-play.jpg",
+    name: "Tum Bhi",
+    image_url: "images/sing-play.jpg",
     artist: "Hordan Damn",
   },
   {
-    songName: "Python Scrap",
-    imgUrl: "images/song-arijit.jpg",
+    name: "Python Scrap",
+    image_url: "images/song-arijit.jpg",
     artist: "Justin Bieber",
   },
   {
-    songName: "Just Play Now",
-    imgUrl: "images/song-damn.jpg",
+    name: "Just Play Now",
+    image_url: "images/song-damn.jpg",
     artist: "Mr Bean",
   },
   {
-    songName: "Just Play Now",
-    imgUrl: "images/song-damn.jpg",
+    name: "Just Play Now",
+    image_url: "images/song-damn.jpg",
     artist: "Mr Bean",
   },
 ];
 
 const songList2 = [...songList1];
 
-const albums = [
+interface Album {
+  songs: Song[];
+  id: string;
+  name: string;
+  link?: string;
+}
+const albums: Album[] = [
   {
     id: "anjsax",
     name: "Recently Played",
-    songList: songList1,
+    songs: songList1,
   },
   {
     id: "radome",
     name: "Your mixes",
-    songList: songList2.reverse(),
+    songs: songList2.reverse(),
   },
   {
     id: "assdas",
     name: "Popular Albums",
-    songList: songList1,
+    songs: songList1,
   },
 ];
-
-type Album = {
-  songList: Song[];
-  id: string;
-  name: string;
-  link?: string;
-};
 
 // interface AlbumProp {
 //   // album: Album[];
 // }
+
 const Dashboard: React.FunctionComponent<any> = (props) => {
+  const [albums2, setAlbums2] = useState<Album[]>(albums);
+
+  useEffect(() => {
+    async function getAlbums() {
+      let options = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      await fetch(Constants.API + "/album", options)
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw res;
+          }
+        })
+        .then((data) => {
+          console.log(data);
+          // let x: Album[] =
+          setAlbums2(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    getAlbums();
+    // let alb = JSON.parse(data) as Album[];
+  }, [albums2]);
+
   return (
     <div className="dashboard-box absolute left-64 z-[-100] h-[calc(100vh-6rem)] w-[calc(100vw-16rem)] text-white bg-mygrey-600 overflow-y-auto">
       <div className="flex flex-col p-2 m-2">
-        {albums.map((album) => {
+        {albums2.map((album) => {
           return <SongList album={album}></SongList>;
         })}
       </div>
@@ -108,7 +142,7 @@ const SongList: React.FunctionComponent<SongsProp> = (props) => {
         </button>
       </div>
       <div className="song-list flex p-4 gap-8 items-center whitespace-nowrap w-full overflow-x-auto h-68">
-        {props.album.songList.map((song) => {
+        {props.album.songs.map((song) => {
           return <SongCard song={song} />;
         })}
       </div>
@@ -141,13 +175,13 @@ const SongCard: React.FunctionComponent<IProp> = (props) => {
           <div className="h-46 w-46 self-center">
             <img
               className="album-image rounded h-44 w-44"
-              src={props.song.imgUrl}
-              alt={props.song.songName.toLowerCase()}
+              src={props.song.image_url}
+              alt={props.song.name.toLowerCase()}
             />
           </div>
           <div className="px-4 py-2 flex flex-col">
             <span className="capitalize font-semibold text-sm overflow-hidden text-ellipsis">
-              {props.song.songName}
+              {props.song.name}
             </span>
             <span className="artist-name text-xs text-gray-400 overflow-hidden text-ellipsis">
               {props.song.artist}

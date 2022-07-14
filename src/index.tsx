@@ -3,11 +3,6 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import MainPage from "./Pages/MainPage";
-import SongQueue from "./Components/SongQueue";
-import LoginPage from "./Pages/LoginPage";
-import Dashboard from "./Components/Dashboard";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
