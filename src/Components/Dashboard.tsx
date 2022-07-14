@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import Constants from "./Constants";
 
 import "./Dashboard.css";
-import { resolve } from "path";
 
 type Song = {
   name: string;
@@ -54,12 +53,12 @@ const songList1 = [
 
 const songList2 = [...songList1];
 
-interface Album {
+type Album = {
   songs: Song[];
   id: string;
   name: string;
-  link?: string;
-}
+  image_url?: string;
+};
 const albums: Album[] = [
   {
     id: "anjsax",
@@ -93,7 +92,9 @@ const Dashboard: React.FunctionComponent<any> = (props) => {
           "Content-Type": "application/json",
         },
       };
-      await fetch(Constants.API + "/album", options)
+      await fetch(Constants.API + "/album", {
+        ...options,
+      })
         .then((res) => {
           if (res.ok) {
             return res.json();
@@ -104,7 +105,7 @@ const Dashboard: React.FunctionComponent<any> = (props) => {
         .then((data) => {
           console.log(data);
           // let x: Album[] =
-          setAlbums2(data);
+          // setAlbums2(data);
         })
         .catch((err) => {
           console.log(err);
@@ -112,7 +113,7 @@ const Dashboard: React.FunctionComponent<any> = (props) => {
     }
     getAlbums();
     // let alb = JSON.parse(data) as Album[];
-  }, [albums2]);
+  }, []);
 
   return (
     <div className="dashboard-box absolute left-64 z-[-100] h-[calc(100vh-6rem)] w-[calc(100vw-16rem)] text-white bg-mygrey-600 overflow-y-auto">
