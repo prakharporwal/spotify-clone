@@ -16,7 +16,7 @@ import { State, useStoreState } from "easy-peasy";
 import { createRef } from "react";
 import { StoreModel } from "../Store/Player";
 import { Song } from "./Dashboard";
-import { isValidDate } from "../utils/Date";
+import { numOfSecondsToMMSS } from "../utils/Date";
 
 const SongPlayer: React.FunctionComponent<any> = (props) => {
   const [liked, setLiked] = useState(false);
@@ -82,9 +82,15 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
     const audioPlayer: HTMLAudioElement | null = document.getElementById(
       "audioplayer"
     ) as HTMLAudioElement;
+
     if (audioPlayer !== null) {
       console.log("play song");
       audioPlayer.play();
+
+      audioPlayer.addEventListener("ended", () => {
+        console.log("graceful stop!");
+        setPlaying(false);
+      });
     }
   }
 
@@ -96,6 +102,20 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
       console.log("pause song");
       audioPlayer.pause();
     }
+  }
+
+  function seek10Forward() {
+    const audioPlayer: HTMLAudioElement | null = document.getElementById(
+      "audioplayer"
+    ) as HTMLAudioElement;
+    audioPlayer.currentTime = audioPlayer.currentTime + 10;
+  }
+
+  function seek10Back() {
+    const audioPlayer: HTMLAudioElement | null = document.getElementById(
+      "audioplayer"
+    ) as HTMLAudioElement;
+    audioPlayer.currentTime = audioPlayer.currentTime - 10;
   }
 
   function restart() {
@@ -144,9 +164,6 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
     setShuffle(!shuffle);
   }
 
-  function handler() {
-    setCurrentTime(currentTime + 10);
-  }
   return (
     <div className="w-full grid place-items-center">
       <div className="py-1 px-8 grid place-items-center">
@@ -162,7 +179,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
           <button
             title="Previous"
             className="song-player-button py-2 text-3xl"
-            onClick={restart}
+            onClick={seek10Back}
           >
             <MdSkipPrevious />
           </button>
@@ -179,7 +196,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
           <button
             title="Next"
             className="song-player-button text-3xl"
-            onClick={restart}
+            onClick={seek10Forward}
           >
             <MdSkipNext />
           </button>
@@ -212,7 +229,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         </section>
       </div>
       <div className="w-[90%]">
-        <AudioPlayer loop={repeat !== DISABLED} src={""} />
+        <AudioPlayer playing={playing} loop={repeat !== DISABLED} src={""} />
       </div>
     </div>
   );
@@ -228,11 +245,11 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
 
   const [volume, setVolume] = useState<number>(VOLMAX);
 
-  let audioPlayer: HTMLAudioElement | null = document.getElementById(
-    "audioplayer"
-  ) as HTMLAudioElement;
-
   function adjustVolume(vol: number) {
+    let audioPlayer: HTMLAudioElement | null = document.getElementById(
+      "audioplayer"
+    ) as HTMLAudioElement;
+
     if (audioPlayer !== null) {
       console.log("vol", vol);
       audioPlayer.volume = vol / 100;
@@ -303,17 +320,18 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
         </div>
       </Link>
       <Link to="queue">
-        <div className="song-player-button text-2xl self-center">
-          <MdOutlineQueueMusic />
-        </div>
-      </Link> */}
+      <div className="song-player-button text-2xl self-center">
+      <MdOutlineQueueMusic />
+      </div>
+    </Link> */}
     </div>
   );
 };
 
 const AudioPlayer: React.FunctionComponent<any> = (props) => {
   const audioRef = createRef<HTMLAudioElement>();
-  const currentTime = useRef(audioRef.current?.currentTime);
+  const [currentTime, setCurrentTime] = useState("00:00");
+  const [progress, setProgress] = useState(0);
   const [totalDuration, setTotalDuration] = useState("");
   const song: Song = useStoreState<StoreModel>((state) => state.song);
 
@@ -324,43 +342,60 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
     if (audioPlayer === null) {
       return;
     }
-    console.log("state change");
-    audioPlayer.onloadedmetadata = () => {
-      setTotalDuration(getSongDuration());
-    };
-  }, [song]);
 
-  function getSongDuration(): string {
+    var totalDur = getSongDuration();
+    setTotalDuration(numOfSecondsToMMSS(totalDur));
+
+    if (props.playing) {
+      let intervalId = setInterval(() => {
+        let x: number = getCurrentTime();
+        setCurrentTime(numOfSecondsToMMSS(x));
+        let prgres = x * 100;
+        prgres /= totalDur;
+
+        console.log(prgres, x);
+
+        setProgress(prgres);
+      }, 1000);
+
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [song, props.playing]);
+
+  function getCurrentTime(): number {
     const audioPlayer: HTMLAudioElement | null = document.getElementById(
       "audioplayer"
     ) as HTMLAudioElement;
     if (audioPlayer === null) {
-      return "0";
+      return 0;
     }
 
-    let x = new Date(audioPlayer.duration * 1000);
-    if (!isValidDate(x)) {
-      return "0";
+    let x = audioPlayer.currentTime;
+    return x;
+  }
+
+  function getSongDuration(): number {
+    const audioPlayer: HTMLAudioElement | null = document.getElementById(
+      "audioplayer"
+    ) as HTMLAudioElement;
+    if (audioPlayer === null) {
+      return 1; // avoid 0 because progress calculation faces 0,0 for song progress bar
     }
 
-    let timeStr = x.toISOString();
-    console.log(timeStr);
-
-    if (timeStr.slice(11, 13) !== "00") {
-      return timeStr.slice(11, 19);
-    }
-    return timeStr.slice(14, 19);
+    let x = audioPlayer.duration;
+    return x;
   }
 
   return (
     <div className="flex items-center">
-      <span className="song-player-button text-xs mr-4">0:00</span>
+      <span className="song-player-button text-xs mr-4">{currentTime}</span>
       <ProgressBar
         // progress={audioRef.current?.currentTime || 0}
-        progress={30}
+        progress={progress}
         total={100}
       ></ProgressBar>
-      <div>{currentTime.current}</div>
       <audio
         id="audioplayer"
         className="w-full border"
@@ -371,7 +406,6 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
         hidden
         ref={audioRef}
         aria-hidden
-        onClick={() => console.log(audioRef.current?.currentTime)}
       ></audio>
       <span className="song-player-button text-xs ml-4">{totalDuration}</span>
     </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./ProgressBar.css";
 
 interface IProps {
@@ -7,6 +7,10 @@ interface IProps {
 }
 
 const ProgressBar: React.FunctionComponent<IProps> = (props) => {
+  useEffect(() => {
+    console.log(props.progress.toString());
+  });
+
   return (
     <div className="progress-bar bg-mygrey-400 rounded h-1 w-full overflow-hidden">
       <div
