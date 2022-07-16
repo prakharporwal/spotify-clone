@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TbRepeat, TbRepeatOnce } from "react-icons/tb";
 import { RiHeartFill, RiHeartLine } from "react-icons/ri";
 import { BiShuffle } from "react-icons/bi";
@@ -12,6 +12,9 @@ import { FiVolume1, FiVolumeX, FiVolume2, FiVolume } from "react-icons/fi";
 import { AiFillPlayCircle, AiFillPauseCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
+import { State, useStoreState } from "easy-peasy";
+import { createRef } from "react";
+import { StoreModel } from "../Store/Player";
 
 const SongPlayer: React.FunctionComponent<any> = (props) => {
   const [liked, setLiked] = useState(false);
@@ -21,13 +24,13 @@ const SongPlayer: React.FunctionComponent<any> = (props) => {
   }
 
   return (
-    <section className="song-player-bar grid grid-cols-player bg-mygrey-700 fixed bottom-0 w-screen h-24 text-white border-mygrey-800">
-      <div className="flex mx-4">
-        <div className="mx-4 h-16 w-16 self-center">
+    <section className="song-player-bar grid grid-cols-player bg-mygrey-700 fixed bottom-0 w-screen h-24 text-white">
+      <div className="flex">
+        <div className="mx-2 h-16 w-16 self-center">
           <img src="images/song-mix.jpg" alt={"Song Name"}></img>
         </div>
         <div className="flex flex-col py-4 px-0 gap-1 w-64 md:w-44 sm:w-32">
-          <span className="block text-sm mt-2 overflow-hidden text-ellipsis">
+          <span className="block text-sm font-semibold overflow-hidden text-ellipsis">
             Song Name
           </span>
           <span className="text-xs">
@@ -66,6 +69,8 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   const [playing, setPlaying] = useState(false);
   const [repeat, setRepeat] = useState(DISABLED);
   const [shuffle, setShuffle] = useState(false);
+  const [currentTime, setCurrentTime] = useState(-1);
+  const songSource = useStoreState((state: State<StoreModel>) => state.song);
 
   function play() {
     const audioPlayer: HTMLAudioElement | null = document.getElementById(
@@ -98,16 +103,6 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         setPlaying(true);
       }
     }
-  }
-
-  function getCurrentTime() {
-    const audioPlayer: HTMLAudioElement | null = document.getElementById(
-      "audioplayer"
-    ) as HTMLAudioElement;
-    if (audioPlayer === null) {
-      return 0;
-    }
-    return audioPlayer.currentTime;
   }
 
   function getSongDuration() {
@@ -153,78 +148,77 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
     setShuffle(!shuffle);
   }
 
+  function handler() {
+    setCurrentTime(currentTime + 10);
+  }
   return (
-    <>
-      <section className="player-controls px-8 flex gap-4 justify-around text-4xl py-1">
-        <AudioPlayer
-          loop={repeat !== DISABLED}
-          src={"songs/kho-gaye-hum-kahan.mp3"}
-        />
-        <button
-          title="Enable Shuffle"
-          className="shuffle-toggle-button song-player-button py-4 text-xl"
-          onClick={handleShuffleClick}
-        >
-          {shuffle ? <BiShuffle className="text-mygreen" /> : <BiShuffle />}
-        </button>
-
-        <button
-          title="Previous"
-          className="song-player-button py-2 text-3xl"
-          onClick={restart}
-        >
-          <MdSkipPrevious />
-        </button>
-
-        {playing ? (
-          <button title="Pause" onClick={handlePlayingClick}>
-            <AiFillPauseCircle />
-          </button>
-        ) : (
-          <button title="Play" onClick={handlePlayingClick}>
-            <AiFillPlayCircle />
-          </button>
-        )}
-        <button
-          title="Next"
-          className="song-player-button text-3xl"
-          onClick={restart}
-        >
-          <MdSkipNext />
-        </button>
-
-        {repeat === DISABLED ? (
+    <div className="w-full grid place-items-center">
+      <div className="py-1 px-8 grid place-items-center">
+        <section className="player-controls flex gap-4 justify-around text-4xl">
           <button
-            title="Enable Repeat"
-            className="song-player-button text-xl"
-            onClick={handleRepeatButtonClick}
+            title="Enable Shuffle"
+            className="shuffle-toggle-button song-player-button py-4 text-xl"
+            onClick={handleShuffleClick}
           >
-            <TbRepeat />
+            {shuffle ? <BiShuffle className="text-mygreen" /> : <BiShuffle />}
           </button>
-        ) : repeat === ENABLED ? (
+
           <button
-            title="Repeat Once"
-            className="song-player-button text-xl"
-            onClick={handleRepeatButtonClick}
+            title="Previous"
+            className="song-player-button py-2 text-3xl"
+            onClick={restart}
           >
-            <TbRepeat className="text-mygreen" />
+            <MdSkipPrevious />
           </button>
-        ) : (
+
+          {playing ? (
+            <button title="Pause" onClick={handlePlayingClick}>
+              <AiFillPauseCircle />
+            </button>
+          ) : (
+            <button title="Play" onClick={handlePlayingClick}>
+              <AiFillPlayCircle />
+            </button>
+          )}
           <button
-            title="Disable Repeat"
-            className="song-player-button text-xl"
-            onClick={handleRepeatButtonClick}
+            title="Next"
+            className="song-player-button text-3xl"
+            onClick={restart}
           >
-            <TbRepeatOnce className="text-mygreen" />
+            <MdSkipNext />
           </button>
-        )}
-      </section>
-      <div>
-        <ProgressBar progress={getCurrentTime()} total={getSongDuration()} />
+
+          {repeat === DISABLED ? (
+            <button
+              title="Enable Repeat"
+              className="song-player-button text-xl"
+              onClick={handleRepeatButtonClick}
+            >
+              <TbRepeat />
+            </button>
+          ) : repeat === ENABLED ? (
+            <button
+              title="Repeat Once"
+              className="song-player-button text-xl"
+              onClick={handleRepeatButtonClick}
+            >
+              <TbRepeat className="text-mygreen" />
+            </button>
+          ) : (
+            <button
+              title="Disable Repeat"
+              className="song-player-button text-xl"
+              onClick={handleRepeatButtonClick}
+            >
+              <TbRepeatOnce className="text-mygreen" />
+            </button>
+          )}
+        </section>
       </div>
-      {/* <span>{getCurrentTime()}</span>
-        <span>{getSongDuration()}</span> */}
-    </>
+      <div className="w-[90%]">
+        <AudioPlayer loop={repeat !== DISABLED} src={songSource} />
+      </div>
+    </div>
   );
 };
 
@@ -288,7 +282,7 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
   }
 
   return (
-    <div className="other-controls px-8 mt-8 flex justify-evenly">
+    <div className="other-controls m-8 flex justify-around">
       <div className="flex gap-2">
         <button
           title="Volume"
@@ -307,21 +301,49 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
           <MdOutlineQueueMusic />
         </div>
       </Link>
+      <Link to="queue">
+        <div className="song-player-button text-2xl self-center">
+          <MdOutlineQueueMusic />
+        </div>
+      </Link>
+      <Link to="queue">
+        <div className="song-player-button text-2xl self-center">
+          <MdOutlineQueueMusic />
+        </div>
+      </Link>
     </div>
   );
 };
 
 const AudioPlayer: React.FunctionComponent<any> = (props) => {
+  const audioRef = createRef<HTMLAudioElement>();
+  const currentTime = useRef(audioRef.current?.currentTime);
+  // useEffect(() => {
+  //   let x = audioRef.current?.currentTime;
+  // });
+
   return (
-    <audio
-      id="audioplayer"
-      className="w-full"
-      src={props.src}
-      loop={props.loop}
-      preload="metadata"
-      // controls
-      hidden
-      aria-hidden
-    ></audio>
+    <div className="flex items-center">
+      <span className="song-player-button text-xs mr-4">0:00</span>
+      <ProgressBar
+        // progress={audioRef.current?.currentTime || 0}
+        progress={30}
+        total={100}
+      ></ProgressBar>
+      <div>{currentTime.current}</div>
+      <audio
+        id="audioplayer"
+        className="w-full border"
+        src={props.src}
+        loop={props.loop}
+        preload="metadata"
+        // controls
+        hidden
+        ref={audioRef}
+        aria-hidden
+        onClick={() => console.log(audioRef.current?.currentTime)}
+      ></audio>
+      <span className="song-player-button text-xs ml-4">3:00</span>
+    </div>
   );
 };

@@ -1,15 +1,24 @@
+import {
+  Action,
+  action,
+  State,
+  useStoreActions,
+  useStoreState,
+} from "easy-peasy";
 import React, { useEffect, useState } from "react";
 import { MdPauseCircleFilled, MdPlayCircleFilled } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { StoreModel } from "../Store/Player";
 import Constants from "./Constants";
 
 import "./Dashboard.css";
 
-type Song = {
+export type Song = {
   name: string;
   image_url: string;
   artist: string;
   description?: string;
+  audio_src: string;
 };
 
 const songList1 = [
@@ -18,36 +27,37 @@ const songList1 = [
     image_url: "images/song-best.jpg",
     artist: "Arijit Singh",
     description: "The Hits Of Arijit",
+    audio_src: "songs/madhanya.mp3",
   },
   {
     name: "KillerCode",
     image_url: "images/song-art.jpg",
     artist: "Michael Jackson",
+    audio_src: "songs/Cartoon.mp3",
   },
   {
     name: "Be Happy",
     image_url: "images/song-mix.jpg",
     artist: "Michael Jackson",
+    audio_src: "songs/kho-gaye-hum-kahan.mp3",
   },
   {
     name: "Tum Bhi",
     image_url: "images/sing-play.jpg",
     artist: "Hordan Damn",
+    audio_src: "songs/Elektronomia - Sky High [NCS Release].mp3",
   },
   {
     name: "Python Scrap",
     image_url: "images/song-arijit.jpg",
     artist: "Justin Bieber",
+    audio_src: "songs/roz.mp3",
   },
   {
     name: "Just Play Now",
     image_url: "images/song-damn.jpg",
     artist: "Mr Bean",
-  },
-  {
-    name: "Just Play Now",
-    image_url: "images/song-damn.jpg",
-    artist: "Mr Bean",
+    audio_src: "songs/aziyat.mp3",
   },
 ];
 
@@ -157,42 +167,51 @@ interface IProp {
 
 const SongCard: React.FunctionComponent<IProp> = (props) => {
   const [play, setPlay] = useState(false);
+  const updateSong = useStoreActions((store: StoreModel) => store.changeSong);
 
   function handleCardClick() {
+    // useStoreActions((store: StoreModel) => store.song.changeSong({}))
+    // updateSong(songList1[0]);
     setPlay(!play);
+    console.log("changing song payload!");
+    console.log(props.song.audio_src);
   }
+
   return (
     <div className="song-card bg-mygrey-500 hover:bg-mygrey-700 inline-block shadow-slate-600 rounded">
-      <Link to="/playlist">
-        <div className="rounded p-4 flex flex-col text-left w-52 relative">
-          <button className="play-song-card bg-mygrey-600 rounded-[50%] absolute right-6 bottom-[4.5rem]">
-            {play ? (
-              <MdPauseCircleFilled className="text-mygreen text-5xl" />
-            ) : (
-              <MdPlayCircleFilled className="text-mygreen text-5xl" />
-            )}
-          </button>
-          {/* <BsFillPlayFill className="text-red text-3xl" /> */}
-          <div className="h-46 w-46 self-center">
-            <img
-              className="album-image rounded h-44 w-44"
-              src={props.song.image_url}
-              alt={props.song.name.toLowerCase()}
-            />
-          </div>
-          <div className="px-4 py-2 flex flex-col">
-            <span className="capitalize font-semibold text-sm overflow-hidden text-ellipsis">
-              {props.song.name}
-            </span>
-            <span className="artist-name text-xs text-gray-400 overflow-hidden text-ellipsis">
-              {props.song.artist}
-            </span>
-            {/* <span className="text-2xs font-semibold text-gray-400">
+      {/* <Link to="/playlist"> */}
+      <div className="rounded p-4 flex flex-col text-left w-52 relative">
+        <button
+          className="play-song-card bg-mygrey-600 rounded-[50%] absolute right-6 bottom-[4.5rem]"
+          onClick={() => handleCardClick()}
+        >
+          {play ? (
+            <MdPauseCircleFilled className="text-mygreen text-5xl" />
+          ) : (
+            <MdPlayCircleFilled className="text-mygreen text-5xl" />
+          )}
+        </button>
+        {/* <BsFillPlayFill className="text-red text-3xl" /> */}
+        <div className="h-46 w-46 self-center">
+          <img
+            className="album-image rounded h-44 w-44"
+            src={props.song.image_url}
+            alt={props.song.name.toLowerCase()}
+          />
+        </div>
+        <div className="px-4 py-2 flex flex-col">
+          <span className="capitalize font-semibold text-sm overflow-hidden text-ellipsis">
+            {props.song.name}
+          </span>
+          <span className="artist-name text-xs text-gray-400 overflow-hidden text-ellipsis">
+            {props.song.artist}
+          </span>
+          {/* <span className="text-2xs font-semibold text-gray-400">
               {props.song.description || "Hello"}
             </span> */}
-          </div>
         </div>
-      </Link>
+      </div>
+      {/* </Link> */}
     </div>
   );
 };
