@@ -11,7 +11,7 @@ const playerStore = createStore({
     audio_src: "songs/manike-mage-hithe.mp3",
     name: "Aziyat",
     image_url: "",
-    artist: "",
+    artist: "Prathband",
   },
   changeSong: action((state: any, payload: any) => {
     console.log(debug(state));

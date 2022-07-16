@@ -15,5 +15,5 @@
 }
 
 .song-player-button {
-  @apply text-gray-400 hover:text-white;
+  @apply text-gray-200 hover:text-white;
 }

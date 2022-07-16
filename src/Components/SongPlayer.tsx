@@ -15,26 +15,29 @@ import ProgressBar from "./ProgressBar";
 import { State, useStoreState } from "easy-peasy";
 import { createRef } from "react";
 import { StoreModel } from "../Store/Player";
+import { Song } from "./Dashboard";
 
 const SongPlayer: React.FunctionComponent<any> = (props) => {
   const [liked, setLiked] = useState(false);
+
+  const song: Song = useStoreState<StoreModel>((state) => state.song);
 
   function handleLikeClick() {
     setLiked(!liked);
   }
 
   return (
-    <section className="song-player-bar grid grid-cols-player bg-mygrey-700 fixed bottom-0 w-screen h-24 text-white">
-      <div className="flex">
+    <section className="song-player-bar flex bg-mygrey-700 fixed bottom-0 w-screen h-24 text-white">
+      <div className="flex w-[30%]">
         <div className="mx-2 h-16 w-16 self-center">
-          <img src="images/song-mix.jpg" alt={"Song Name"}></img>
+          <img src="images/song-mix.jpg" alt={song.name}></img>
         </div>
-        <div className="flex flex-col py-4 px-0 gap-1 w-64 md:w-44 sm:w-32">
+        <div className="py-4 mr-8 gap-1 w-[35%]">
           <span className="block text-sm font-semibold overflow-hidden text-ellipsis">
-            Song Name
+            {song.name}
           </span>
-          <span className="text-xs">
-            Artist, Prakhar Porwal, Nice Person, Amitabh
+          <span className="text-xs overflow-hidden text-ellipsis w-full">
+            {song.artist}
           </span>
         </div>
         <div className="text-lg flex gap-2">
@@ -51,10 +54,10 @@ const SongPlayer: React.FunctionComponent<any> = (props) => {
         </div>
       </div>
 
-      <div>
+      <div className="w-[50%]">
         <PlayerControls />
       </div>
-      <div>
+      <div className="flex w-[25%]">
         <OtherControls />
       </div>
     </section>
@@ -282,7 +285,7 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
   }
 
   return (
-    <div className="other-controls m-8 flex justify-around">
+    <div className="w-full other-controls m-8 flex justify-around">
       <div className="flex gap-2">
         <button
           title="Volume"
