@@ -167,9 +167,12 @@ interface IProp {
 
 const SongCard: React.FunctionComponent<IProp> = (props) => {
   const [play, setPlay] = useState(false);
-  const updateSong = useStoreActions((store: StoreModel) => store.changeSong);
+  const updateSong = useStoreActions<StoreModel, any>(
+    (store: StoreModel) => store.changeSong
+  );
 
   function handleCardClick() {
+    updateSong(props.song);
     // useStoreActions((store: StoreModel) => store.song.changeSong({}))
     // updateSong(songList1[0]);
     setPlay(!play);

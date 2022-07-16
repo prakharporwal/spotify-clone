@@ -8,10 +8,10 @@ interface StoreModel {
 
 const playerStore = createStore({
   song: {
-    audio_src: "songs/manike-mage-hithe.mp3",
+    audio_src: "songs/aziyat.mp3",
     name: "Aziyat",
     image_url: "",
-    artist: "Prathband",
+    artist: "Pratband",
   },
   changeSong: action((state: any, payload: any) => {
     console.log(debug(state));

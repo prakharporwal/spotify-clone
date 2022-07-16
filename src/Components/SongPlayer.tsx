@@ -73,7 +73,9 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   const [repeat, setRepeat] = useState(DISABLED);
   const [shuffle, setShuffle] = useState(false);
   const [currentTime, setCurrentTime] = useState(-1);
-  const songSource = useStoreState((state: State<StoreModel>) => state.song);
+  const songSource = useStoreState(
+    (state: State<StoreModel>) => state.song.audio_src
+  );
 
   function play() {
     const audioPlayer: HTMLAudioElement | null = document.getElementById(
@@ -106,16 +108,6 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         setPlaying(true);
       }
     }
-  }
-
-  function getSongDuration() {
-    const audioPlayer: HTMLAudioElement | null = document.getElementById(
-      "audioplayer"
-    ) as HTMLAudioElement;
-    if (audioPlayer === null) {
-      return 1; // should not be zero for avoiding 0/0 division
-    }
-    return audioPlayer.duration;
   }
 
   function handlePlayingClick() {
@@ -325,6 +317,24 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
   //   let x = audioRef.current?.currentTime;
   // });
 
+  function getSongDuration() {
+    const audioPlayer: HTMLAudioElement | null = document.getElementById(
+      "audioplayer"
+    ) as HTMLAudioElement;
+    if (audioPlayer === null) {
+      return 1; // should not be zero for avoiding 0/0 division
+    }
+    let x = new Date(audioPlayer.duration * 1000).toISOString();
+
+    if (x.slice(11, 13) !== "00") {
+      return x.slice(11, 19);
+    }
+
+    return x.slice(14, 19);
+  }
+
+  const src = useStoreState<StoreModel>((state) => state.song.audio_src);
+
   return (
     <div className="flex items-center">
       <span className="song-player-button text-xs mr-4">0:00</span>
@@ -337,7 +347,7 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
       <audio
         id="audioplayer"
         className="w-full border"
-        src={props.src}
+        src={src}
         loop={props.loop}
         preload="metadata"
         // controls
@@ -346,7 +356,9 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
         aria-hidden
         onClick={() => console.log(audioRef.current?.currentTime)}
       ></audio>
-      <span className="song-player-button text-xs ml-4">3:00</span>
+      <span className="song-player-button text-xs ml-4">
+        {getSongDuration()}
+      </span>
     </div>
   );
 };
