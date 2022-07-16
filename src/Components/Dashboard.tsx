@@ -21,7 +21,7 @@ export type Song = {
   audio_src: string;
 };
 
-const songList1 = [
+export const songList1: Song[] = [
   {
     name: "NCS",
     image_url: "images/song-best.jpg",

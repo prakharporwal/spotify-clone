@@ -17,6 +17,7 @@ import { createRef } from "react";
 import { StoreModel } from "../Store/Player";
 import { Song } from "./Dashboard";
 import { numOfSecondsToMMSS } from "../utils/Date";
+import "./SongPlayer.css";
 
 const SongPlayer: React.FunctionComponent<any> = (props) => {
   const [liked, setLiked] = useState(false);
@@ -71,7 +72,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   const ENABLED = "enabled";
 
   const [playing, setPlaying] = useState(false);
-  const [repeat, setRepeat] = useState(DISABLED);
+  const [repeat, setRepeat] = useState(ENABLED);
   const [shuffle, setShuffle] = useState(false);
   const [currentTime, setCurrentTime] = useState(-1);
   // const songSource = useStoreState(
