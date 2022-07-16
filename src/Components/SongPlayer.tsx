@@ -317,13 +317,14 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
   //   let x = audioRef.current?.currentTime;
   // });
 
-  function getSongDuration() {
+  function getSongDuration(): string {
     const audioPlayer: HTMLAudioElement | null = document.getElementById(
       "audioplayer"
     ) as HTMLAudioElement;
     if (audioPlayer === null) {
-      return 1; // should not be zero for avoiding 0/0 division
+      return "0"; // should not be zero for avoiding 0/0 division
     }
+
     let x = new Date(audioPlayer.duration * 1000);
     console.log(x);
 
