@@ -126,7 +126,7 @@ const Dashboard: React.FunctionComponent<any> = (props) => {
   }, []);
 
   return (
-    <div className="dashboard-box absolute left-64 z-[-100] h-[calc(100vh-6rem)] w-[calc(100vw-16rem)] text-white bg-mygrey-600 overflow-y-auto">
+    <div className="dashboard-box absolute lg:left-64 sm:left-40 z-[-100] h-[calc(100vh-6rem)] lg:w-[calc(100vw-16rem)] sm:w-[calc(100vw-10rem)] text-white bg-mygrey-600 overflow-y-auto">
       <div className="flex flex-col p-2 m-2">
         {albums2.map((album) => {
           return <SongList album={album}></SongList>;

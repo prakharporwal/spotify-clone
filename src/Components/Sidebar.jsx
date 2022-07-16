@@ -9,14 +9,14 @@ import "./Sidebar.css";
 
 const Sidebar = (props) => {
   return (
-    <div className="fixed top-0 left-0 h-screen p-4 w-64 bg-black">
+    <div className="fixed top-0 left-0 h-screen p-4 lg:w-64 sm:w-40 bg-black">
       <div className="text-white ">
         <Link to="">
           <SpotifyIcon className="scale-[60%]" />
         </Link>
       </div>
       <div className="text-[12px] font-semibold">
-        <ul className="list-none p-3">
+        <ul className="list-none p-3 sm:p-1">
           <li className="py-1">
             <NavLink
               to=""

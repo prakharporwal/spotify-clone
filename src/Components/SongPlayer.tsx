@@ -286,7 +286,7 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
         >
           {renderVolumeButton()}
         </button>
-        <div className="volume-bar self-center sm:w-16 w-24">
+        <div className="volume-bar self-center sm:w-20">
           <ProgressBar progress={volume} total={100} />
         </div>
         <span className="song-player-button text-sm">{volume}</span>
@@ -324,13 +324,17 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
     if (audioPlayer === null) {
       return 1; // should not be zero for avoiding 0/0 division
     }
-    let x = new Date(audioPlayer.duration * 1000).toISOString();
+    let x = new Date(audioPlayer.duration * 1000);
+    console.log(x);
 
-    if (x.slice(11, 13) !== "00") {
-      return x.slice(11, 19);
+    let timeStr = x.toISOString();
+    console.log(timeStr);
+
+    if (timeStr.slice(11, 13) !== "00") {
+      return timeStr.slice(11, 19);
     }
 
-    return x.slice(14, 19);
+    return timeStr.slice(14, 19);
   }
 
   const src = useStoreState<StoreModel>((state) => state.song.audio_src);
