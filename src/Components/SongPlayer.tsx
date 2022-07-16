@@ -280,22 +280,14 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
   }
 
   function renderVolumeButton() {
-    switch (volume) {
-      case MUTE:
-        return <FiVolumeX />;
-      case VOLMAX:
-        return <FiVolume2 />;
-      case VOLMID:
-        return <FiVolume1 />;
-      case VOLMIN:
-        return <FiVolume />;
-      default:
-        break;
-    }
+    if (volume === MUTE) return <FiVolumeX />;
+    if (volume === VOLMAX) return <FiVolume2 />;
+    if (volume >= VOLMID) return <FiVolume1 />;
+    return <FiVolume />;
   }
 
   return (
-    <div className="w-full other-controls m-8 flex justify-around">
+    <div className="w-full other-controls m-8 flex gap-4 justify-around">
       <div className="flex gap-2">
         <button
           title="Volume"
@@ -304,10 +296,20 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
         >
           {renderVolumeButton()}
         </button>
-        <div className="volume-bar self-center sm:w-20">
-          <ProgressBar progress={volume} total={100} />
+        <div className="volume-bar flex items-center gap-2 w-32">
+          <input
+            className="text-white h-1 rounded w-full"
+            type={"range"}
+            min={0}
+            max={100}
+            value={volume}
+            onChange={(e) => {
+              adjustVolume(e.target.valueAsNumber);
+              setVolume(e.target.valueAsNumber);
+            }}
+          ></input>
+          <span className="song-player-button text-sm">{volume}</span>
         </div>
-        <span className="song-player-button text-sm">{volume}</span>
       </div>
       <Link to="queue">
         <div className="song-player-button text-2xl self-center">
