@@ -74,9 +74,9 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   const [repeat, setRepeat] = useState(DISABLED);
   const [shuffle, setShuffle] = useState(false);
   const [currentTime, setCurrentTime] = useState(-1);
-  const songSource = useStoreState(
-    (state: State<StoreModel>) => state.song.audio_src
-  );
+  // const songSource = useStoreState(
+  //   (state: State<StoreModel>) => state.song.audio_src
+  // );
 
   function play() {
     const audioPlayer: HTMLAudioElement | null = document.getElementById(
@@ -212,7 +212,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         </section>
       </div>
       <div className="w-[90%]">
-        <AudioPlayer loop={repeat !== DISABLED} src={songSource} />
+        <AudioPlayer loop={repeat !== DISABLED} src={""} />
       </div>
     </div>
   );
@@ -297,7 +297,7 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
           <MdOutlineQueueMusic />
         </div>
       </Link>
-      <Link to="queue">
+      {/* <Link to="queue">
         <div className="song-player-button text-2xl self-center">
           <MdOutlineQueueMusic />
         </div>
@@ -306,7 +306,7 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
         <div className="song-player-button text-2xl self-center">
           <MdOutlineQueueMusic />
         </div>
-      </Link>
+      </Link> */}
     </div>
   );
 };
@@ -314,9 +314,21 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
 const AudioPlayer: React.FunctionComponent<any> = (props) => {
   const audioRef = createRef<HTMLAudioElement>();
   const currentTime = useRef(audioRef.current?.currentTime);
-  // useEffect(() => {
-  //   let x = audioRef.current?.currentTime;
-  // });
+  const [totalDuration, setTotalDuration] = useState("");
+  const song: Song = useStoreState<StoreModel>((state) => state.song);
+
+  useEffect(() => {
+    const audioPlayer: HTMLAudioElement | null = document.getElementById(
+      "audioplayer"
+    ) as HTMLAudioElement;
+    if (audioPlayer === null) {
+      return;
+    }
+    console.log("state change");
+    audioPlayer.onloadedmetadata = () => {
+      setTotalDuration(getSongDuration());
+    };
+  }, [song]);
 
   function getSongDuration(): string {
     const audioPlayer: HTMLAudioElement | null = document.getElementById(
@@ -340,8 +352,6 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
     return timeStr.slice(14, 19);
   }
 
-  const src = useStoreState<StoreModel>((state) => state.song.audio_src);
-
   return (
     <div className="flex items-center">
       <span className="song-player-button text-xs mr-4">0:00</span>
@@ -354,7 +364,7 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
       <audio
         id="audioplayer"
         className="w-full border"
-        src={src}
+        src={song.audio_src}
         loop={props.loop}
         preload="metadata"
         // controls
@@ -363,9 +373,7 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
         aria-hidden
         onClick={() => console.log(audioRef.current?.currentTime)}
       ></audio>
-      <span className="song-player-button text-xs ml-4">
-        {getSongDuration()}
-      </span>
+      <span className="song-player-button text-xs ml-4">{totalDuration}</span>
     </div>
   );
 };
