@@ -126,11 +126,13 @@ const Dashboard: React.FunctionComponent<any> = (props) => {
   }, []);
 
   return (
-    <div className="dashboard-box absolute lg:left-64 sm:left-40 z-[-100] h-[calc(100vh-6rem)] lg:w-[calc(100vw-16rem)] sm:w-[calc(100vw-10rem)] text-white bg-mygrey-600">
-      <div className="flex flex-col p-2 m-2">
-        {albums2.map((album) => {
-          return <SongList album={album}></SongList>;
-        })}
+    <div className="relative z-[-100] w-full">
+      <div className="absolute top-0 md:left-64 left-0 h-[100vh-6rem] md:w-[calc(100vw-16rem)] w-full overflow-y-auto bg-mygrey-600 text-white">
+        <div className="flex flex-col p-2 m-2">
+          {albums2.map((album) => {
+            return <SongList album={album}></SongList>;
+          })}
+        </div>
       </div>
     </div>
   );
@@ -183,9 +185,9 @@ const SongCard: React.FunctionComponent<IProp> = (props) => {
   return (
     <div className="song-card bg-mygrey-500 hover:bg-mygrey-700 inline-block shadow-slate-600 rounded">
       {/* <Link to="/playlist"> */}
-      <div className="rounded p-4 flex flex-col text-left w-52 relative">
+      <div className="rounded p-4 flex flex-col text-left w-52">
         <button
-          className="play-song-card bg-mygrey-600 rounded-[50%] absolute right-6 bottom-[4.5rem]"
+          className="play-song-card bg-mygrey-600 rounded-[50%] right-6 bottom-[4.5rem]"
           onClick={() => handleCardClick()}
         >
           {play ? (

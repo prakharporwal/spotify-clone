@@ -2,14 +2,14 @@ import React from "react";
 import { MdHomeFilled } from "react-icons/md";
 import { GoSearch } from "react-icons/go";
 import { BiLibrary } from "react-icons/bi";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { ReactComponent as SpotifyIcon } from "../assets/svg/spotify-icon.svg";
 
 import "./Sidebar.css";
 
-const Sidebar = (props) => {
+const Sidebar: React.FunctionComponent<any> = (props) => {
   return (
-    <div className="fixed top-0 left-0 h-screen p-4 lg:w-64 sm:w-40 bg-black">
+    <div className="fixed top-0 left-0 h-screen p-4 md:w-64 w-48 md:block hidden bg-black">
       <div className="text-white ">
         <Link to="">
           <SpotifyIcon className="scale-[60%]" />
