@@ -29,7 +29,7 @@ const SongPlayer: React.FunctionComponent<any> = (props) => {
   }
 
   return (
-    <section className="song-player-bar flex bg-mygrey-700 fixed bottom-0 w-screen h-24 text-white">
+    <section className="song-player-bar flex flex-col md:flex-row bg-mygrey-700 fixed bottom-0 w-screen h-60 md:h-24  text-white">
       <div className="flex w-[30%]">
         <div className="mx-2 h-16 w-16 self-center">
           <img src="images/song-mix.jpg" alt={song.name}></img>
@@ -297,7 +297,7 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
         >
           {renderVolumeButton()}
         </button>
-        <div className="volume-bar flex items-center gap-2 w-32">
+        <div className="volume-bar flex item-center gap-2 w-32">
           <input
             className="text-white h-1 rounded w-full"
             type={"range"}
