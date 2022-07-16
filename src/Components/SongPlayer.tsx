@@ -16,6 +16,7 @@ import { State, useStoreState } from "easy-peasy";
 import { createRef } from "react";
 import { StoreModel } from "../Store/Player";
 import { Song } from "./Dashboard";
+import { isValidDate } from "../utils/Date";
 
 const SongPlayer: React.FunctionComponent<any> = (props) => {
   const [liked, setLiked] = useState(false);
@@ -322,11 +323,13 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
       "audioplayer"
     ) as HTMLAudioElement;
     if (audioPlayer === null) {
-      return "0"; // should not be zero for avoiding 0/0 division
+      return "0";
     }
-    console.log(audioPlayer.duration, audioPlayer.duration * 1000);
+
     let x = new Date(audioPlayer.duration * 1000);
-    console.log(x);
+    if (!isValidDate(x)) {
+      return "0";
+    }
 
     let timeStr = x.toISOString();
     console.log(timeStr);
@@ -334,7 +337,6 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
     if (timeStr.slice(11, 13) !== "00") {
       return timeStr.slice(11, 19);
     }
-
     return timeStr.slice(14, 19);
   }
 
