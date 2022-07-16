@@ -324,7 +324,7 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
     if (audioPlayer === null) {
       return "0"; // should not be zero for avoiding 0/0 division
     }
-
+    console.log(audioPlayer.duration, audioPlayer.duration * 1000);
     let x = new Date(audioPlayer.duration * 1000);
     console.log(x);
 
