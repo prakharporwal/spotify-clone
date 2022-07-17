@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { MdPauseCircleFilled, MdPlayCircleFilled } from "react-icons/md";
+import { RiHeartFill, RiHeartLine } from "react-icons/ri";
+import { AiOutlineEllipsis } from "react-icons/ai";
 import { Song, songList1 } from "./Dashboard";
+import { BiTime } from "react-icons/bi";
 
 interface SongList {
   songsList: Song[];
@@ -8,6 +11,11 @@ interface SongList {
 
 const SongQueue: React.FunctionComponent<SongList> = (props) => {
   const [play, setPlay] = useState(false);
+  const [liked, setLiked] = useState(false);
+
+  function handleLikeClick() {
+    setLiked(!liked);
+  }
 
   return (
     <div className="relative z-[-100] w-full">
@@ -25,33 +33,55 @@ const SongQueue: React.FunctionComponent<SongList> = (props) => {
           </div>
         </div>
         <div className="bg-mygrey-600/[0.5]">
-          <div className="p-4">
+          <div className="p-4 flex items-center gap-4">
             <button
-              className="bg-mygrey-600 rounded-[50%]"
+              className="bg-mygrey-600 rounded-[50%] text-6xl"
               onClick={() => {
                 console.log("hello");
                 setPlay(!play);
               }}
             >
               {play ? (
-                <MdPauseCircleFilled className="text-mygreen text-6xl" />
+                <MdPauseCircleFilled className="text-mygreen" />
               ) : (
-                <MdPlayCircleFilled className="text-mygreen text-6xl" />
+                <MdPlayCircleFilled className="text-mygreen" />
               )}
+            </button>
+            <button
+              title="Like"
+              className="song-player-button mygreen text-4xl"
+              onClick={handleLikeClick}
+            >
+              {liked ? <RiHeartFill className="text-" /> : <RiHeartLine />}
+            </button>
+            <button
+              title="Like"
+              className="song-player-button mygreen text-4xl"
+            >
+              <AiOutlineEllipsis />
             </button>
           </div>
 
-          <ol className="flex flex-col gap-3 px-8">
+          <table className="flex flex-col gap-3 px-8 table-auto">
+            <tr className="flex gap-4 text-left rounded p-2 text-mygrey-200 uppercase font-normal text-sm">
+              <th className="font-normal w-12">{"#"}</th>
+              <th className="font-normal w-96">{"Title"}</th>
+              <th className="font-normal w-80">{"Album"}</th>
+              <th className="font-normal">
+                <BiTime />
+              </th>
+            </tr>
+
             {songList1.map((song, ind) => {
-              return <SongListItem key={ind} song={song} />;
+              return <SongListItem index={ind} song={song} />;
             })}
-            {songList1.map((song) => {
-              return <SongListItem song={song} />;
+            {songList1.map((song, ind) => {
+              return <SongListItem index={ind} song={song} />;
             })}
-            {songList1.map((song) => {
-              return <SongListItem song={song} />;
+            {songList1.map((song, ind) => {
+              return <SongListItem index={ind} song={song} />;
             })}
-          </ol>
+          </table>
         </div>
       </div>
     </div>
@@ -59,25 +89,33 @@ const SongQueue: React.FunctionComponent<SongList> = (props) => {
 };
 
 interface SongProps {
+  index: number;
   song: Song;
 }
 
-const SongListItem: React.FunctionComponent<SongProps> = ({ song }) => {
+const SongListItem: React.FunctionComponent<SongProps> = ({ index, song }) => {
   return (
-    <li className="flex gap-4 items-center rounded hover:bg-mygrey-400 p-2">
-      <span>
-        <span>{1}</span>
-      </span>
-      <span>
-        <img className="h-12 w-12" src={song.image_url} alt={song.name} />
-      </span>
-      <span>
-        <span className="block">{song.name}</span>
-        <span className="block text-xs text-mygrey-200">{song.artist}</span>
-      </span>
-      <span></span>
-    </li>
+    <tr>
+      <tbody className="flex gap-4 items-center rounded hover:bg-mygrey-400 p-2">
+        <td className="w-8 p-2">
+          <span>{index + 1}</span>
+        </td>
+        <td className="flex gap-4 w-96">
+          <span>
+            <img className="h-12 w-12" src={song.image_url} alt={song.name} />
+          </span>
+          <span>
+            <span className="block">{song.name}</span>
+            <span className="block text-xs text-mygrey-200">{song.artist}</span>
+          </span>
+        </td>
+        <td className="w-80">
+          <span>{song.audio_src}</span>
+        </td>
+      </tbody>
+    </tr>
   );
 };
 
 export default SongQueue;
+export { SongListItem };
