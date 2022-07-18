@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import MainPage from "./Pages/MainPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./Pages/LoginPage";
@@ -25,10 +24,12 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />}>
             <Route index element={<Dashboard />}></Route>
-            <Route path="playlist" element={<Playlist />}></Route>
+            <Route path="playlist" element={<Playlist />}>
+              {/* <Route path="/:id" children={ }></Route> */}
+            </Route>
             <Route path="library" element={<Dashboard />}></Route>
             <Route path="search" element={<Dashboard />}></Route>
-            <Route path="queue" element={<SongQueue />}></Route>
+            <Route path="queue" element={<SongQueue songsList={[]} />}></Route>
           </Route>
 
           <Route path="/login" element={<LoginPage />}></Route>
