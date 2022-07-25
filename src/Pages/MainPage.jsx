@@ -8,6 +8,9 @@ import { playerStore } from "../Store/Player";
 const MainPage = (props) => {
   return (
     <>
+      <div className="text-center bg-red-500">
+        Routing not working Properly! Expect Bugs!
+      </div>
       <StoreProvider store={playerStore}>
         <Sidebar />
         <SongPlayer />
