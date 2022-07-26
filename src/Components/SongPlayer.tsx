@@ -12,7 +12,7 @@ import { FiVolume1, FiVolumeX, FiVolume2, FiVolume } from "react-icons/fi";
 import { AiFillPlayCircle, AiFillPauseCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
-import { State, useStoreState } from "easy-peasy";
+import { State, useStoreActions, useStoreState } from "easy-peasy";
 import { createRef } from "react";
 import { StoreModel } from "../Store/Player";
 import { Song } from "./Dashboard";
@@ -21,7 +21,6 @@ import "./SongPlayer.css";
 
 const SongPlayer: React.FunctionComponent<any> = (props) => {
   const [liked, setLiked] = useState(false);
-
   const song: Song = useStoreState<StoreModel>((state) => state.song);
 
   function handleLikeClick() {
@@ -29,10 +28,10 @@ const SongPlayer: React.FunctionComponent<any> = (props) => {
   }
 
   return (
-    <section className="song-player-bar flex flex-col md:flex-row bg-mygrey-700 fixed bottom-0 w-full h-60 md:h-24  text-white">
-      <div className="flex w-[30%]">
+    <section className="song-player-bar z-[100] flex flex-col justify-evenly items-center md:flex-row bg-mygrey-700 fixed bottom-0 w-full h-52 md:h-24 text-white overflow-hidden">
+      <div className="flex w-full md:w-[30%]">
         <div className="mx-2 h-16 w-16 self-center">
-          <img src="images/song-mix.jpg" alt={song.name}></img>
+          <img src={song.image_url} alt={song.name}></img>
         </div>
         <div className="py-4 mr-8 gap-1 w-[35%]">
           <span className="block text-sm font-semibold overflow-hidden text-ellipsis">
@@ -56,10 +55,10 @@ const SongPlayer: React.FunctionComponent<any> = (props) => {
         </div>
       </div>
 
-      <div className="w-[50%]">
+      <div className="w-[90%] md:w-[50%]">
         <PlayerControls />
       </div>
-      <div className="flex w-[25%]">
+      <div className="flex w-[25%] invisible md:visible">
         <OtherControls />
       </div>
     </section>
@@ -75,6 +74,12 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   const [repeat, setRepeat] = useState(ENABLED);
   const [shuffle, setShuffle] = useState(false);
   const [currentTime, setCurrentTime] = useState(-1);
+
+  const queue: Song[] = useStoreState<StoreModel>((state) => state.queue);
+  const song: Song = useStoreState<StoreModel>((state) => state.song);
+
+  const updateSong = useStoreActions<StoreModel>((state) => state.changeSong);
+
   // const songSource = useStoreState(
   //   (state: State<StoreModel>) => state.song.audio_src
   // );
@@ -91,6 +96,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
       audioPlayer.addEventListener("ended", () => {
         console.log("graceful stop!");
         setPlaying(false);
+        updateSong(queue.at(2));
       });
     }
   }
@@ -171,7 +177,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
         <section className="player-controls flex gap-4 justify-around text-4xl">
           <button
             title="Enable Shuffle"
-            className="shuffle-toggle-button song-player-button py-4 text-xl"
+            className="shuffle-toggle-button song-player-button py-4 text-xl invisible md:visible"
             onClick={handleShuffleClick}
           >
             {shuffle ? <BiShuffle className="text-mygreen" /> : <BiShuffle />}
@@ -179,7 +185,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
 
           <button
             title="Previous"
-            className="song-player-button py-2 text-3xl"
+            className="song-player-button py-2 text-3xl invisible md:visible"
             onClick={seek10Back}
           >
             <MdSkipPrevious />
@@ -229,8 +235,13 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
           )}
         </section>
       </div>
-      <div className="w-[90%]">
-        <AudioPlayer playing={playing} loop={repeat !== DISABLED} src={""} />
+      <div className="w-full invisible md:visible">
+        <AudioPlayer
+          song={song}
+          playing={playing}
+          loop={repeat !== DISABLED}
+          src={""}
+        />
       </div>
     </div>
   );
@@ -336,7 +347,7 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
   const [currentTime, setCurrentTime] = useState("00:00");
   const [progress, setProgress] = useState(0);
   const [totalDuration, setTotalDuration] = useState("");
-  const song: Song = useStoreState<StoreModel>((state) => state.song);
+  const song = props.song;
 
   useEffect(() => {
     const audioPlayer: HTMLAudioElement | null = document.getElementById(
@@ -355,9 +366,7 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
         setCurrentTime(numOfSecondsToMMSS(x));
         let prgres = x * 100;
         prgres /= totalDur;
-
         console.log(prgres, x);
-
         setProgress(prgres);
       }, 1000);
 
@@ -372,10 +381,13 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
       "audioplayer"
     ) as HTMLAudioElement;
     if (audioPlayer === null) {
-      return 0;
+      console.log("audioplayer", audioPlayer);
+      return 1;
     }
+    console.log("audioplayer", audioPlayer);
 
     let x = audioPlayer.currentTime;
+    console.log("currtime", x);
     return x;
   }
 
@@ -387,7 +399,8 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
       return 1; // avoid 0 because progress calculation faces 0,0 for song progress bar
     }
 
-    let x = audioPlayer.duration;
+    let x: number = audioPlayer.duration;
+    console.log("totalTime", x);
     return x;
   }
 
@@ -402,7 +415,7 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
       <audio
         id="audioplayer"
         className="w-full border"
-        src={song.audio_src}
+        src={props.song.audio_src}
         loop={props.loop}
         preload="metadata"
         // controls

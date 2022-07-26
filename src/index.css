@@ -17,3 +17,9 @@
 .song-player-button {
   @apply text-gray-200 hover:text-white focus-visible:border-none;
 }
+
+@layer components {
+  .my-table-spacing {
+    border-spacing: theme("spacing.3");
+  }
+}
