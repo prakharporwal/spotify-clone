@@ -1,5 +1,4 @@
 /* Background of progress bar*/
-
 .progress-bar input[type="range"]::-webkit-slider-runnable-track {
   background: white;
   height: 0.2rem;

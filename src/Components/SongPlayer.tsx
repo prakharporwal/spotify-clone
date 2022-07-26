@@ -96,7 +96,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
       audioPlayer.addEventListener("ended", () => {
         console.log("graceful stop!");
         setPlaying(false);
-        updateSong(queue.at(2));
+        // updateSong(queue.at(2));
       });
     }
   }
@@ -298,6 +298,11 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
     return <FiVolume />;
   }
 
+  function updateVolume(newVol: number) {
+    adjustVolume(newVol);
+    setVolume(newVol);
+  }
+
   return (
     <div className="w-full other-controls m-8 flex gap-4 justify-around">
       <div className="flex gap-2">
@@ -312,10 +317,7 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
           <ProgressBar
             progress={volume}
             total={100}
-            onChange={(e) => {
-              adjustVolume(e.target.valueAsNumber);
-              setVolume(e.target.valueAsNumber);
-            }}
+            updateProgress={updateVolume}
           ></ProgressBar>
           {/* <input
             className="h-1 bg-transparent cursor-pointer rounded w-full"
@@ -412,6 +414,13 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
     return x;
   }
 
+  function updateSongCurrentTime(newTime: number) {
+    const audioPlayer: HTMLAudioElement | null = document.getElementById(
+      "audioplayer"
+    ) as HTMLAudioElement;
+    audioPlayer.currentTime = newTime;
+  }
+
   return (
     <div className="flex items-center">
       <span className="song-player-button text-xs mr-4">{currentTime}</span>
@@ -419,10 +428,8 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
         // progress={audioRef.current?.currentTime || 0}
         progress={progress}
         total={100}
-        onChange={(e) => {
-          console.log(e.target.valueAsNumber);
-          setProgress(e.target.valueAsNumber);
-        }}
+        updateProgress={updateSongCurrentTime}
+        converting={getSongDuration()}
       ></ProgressBar>
       <audio
         id="audioplayer"

@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { createRef, useEffect, useRef } from "react";
 import "./ProgressBar.css";
 
 interface IProps {
   progress: number;
   total: number;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  updateProgress: (x: any) => void;
+  converting?: number;
 }
 
 const ProgressBar: React.FunctionComponent<IProps> = (props) => {
@@ -20,17 +21,22 @@ const ProgressBar: React.FunctionComponent<IProps> = (props) => {
     //   ></div>
     // </div>
     <>
-      <input
-        type={"range"}
-        className="bg-transparent cursor-pointer relative w-full hidden"
-        onChange={props.onChange}
-      ></input>
-      <div className="progress-bar relative bg-mygrey-400 rounded h-1 w-full box-border overflow-hidden">
-        <span
+      <div className="progress-bar relative bg-mygrey-400 rounded h-1 w-full box-border">
+        {/* <span
           className="inner-bar absolute bg-white hover:bg-mygreen rounded h-1"
           style={{ width: `${props.progress.toString()}%` }}
           onChange={props.onChange}
-        ></span>
+        ></span> */}
+        <input
+          type={"range"}
+          className="bg-transparent cursor-pointer absolute top-0 w-full"
+          value={props.progress}
+          onChange={(e) => {
+            props.updateProgress(
+              (e.target.valueAsNumber / 100) * (props.converting || 100)
+            );
+          }}
+        ></input>
       </div>
     </>
   );
