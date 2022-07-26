@@ -10,7 +10,7 @@ const MainPage = (props) => {
   return (
     <>
       <div className="block md:hidden text-center bg-red-500">
-        Not Supporting mobile! Expect Bugs!
+        Not Supporting mobile! Open On a Bigger Screen!
       </div>
       <StoreProvider store={playerStore}>
         <Sidebar />
