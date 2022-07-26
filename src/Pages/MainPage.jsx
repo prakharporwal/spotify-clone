@@ -9,9 +9,9 @@ import MobilePlayer from "../Components/MobilePlayer";
 const MainPage = (props) => {
   return (
     <>
-      {/* <div className="text-center bg-red-500">
-        Routing not working Properly! Expect Bugs!
-      </div> */}
+      <div className="block md:hidden text-center bg-red-500">
+        Not Supporting mobile! Expect Bugs!
+      </div>
       <StoreProvider store={playerStore}>
         <Sidebar />
         <div className="hidden md:block">

@@ -17,7 +17,7 @@ import { createRef } from "react";
 import { StoreModel } from "../Store/Player";
 import { Song } from "./Dashboard";
 import { numOfSecondsToMMSS } from "../utils/Date";
-import "./SongPlayer.css";
+// import "./SongPlayer.css";
 
 const SongPlayer: React.FunctionComponent<any> = (props) => {
   const [liked, setLiked] = useState(false);
@@ -308,9 +308,17 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
         >
           {renderVolumeButton()}
         </button>
-        <div className="volume-bar flex item-center gap-2 w-32">
-          <input
-            className="text-white h-1 rounded w-full"
+        <div className="volume-bar flex items-center gap-2 w-32">
+          <ProgressBar
+            progress={volume}
+            total={100}
+            onChange={(e) => {
+              adjustVolume(e.target.valueAsNumber);
+              setVolume(e.target.valueAsNumber);
+            }}
+          ></ProgressBar>
+          {/* <input
+            className="h-1 bg-transparent cursor-pointer rounded w-full"
             type={"range"}
             min={0}
             max={100}
@@ -319,7 +327,7 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
               adjustVolume(e.target.valueAsNumber);
               setVolume(e.target.valueAsNumber);
             }}
-          ></input>
+          ></input> */}
           <span className="song-player-button text-sm">{volume}</span>
         </div>
       </div>
@@ -411,6 +419,10 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
         // progress={audioRef.current?.currentTime || 0}
         progress={progress}
         total={100}
+        onChange={(e) => {
+          console.log(e.target.valueAsNumber);
+          setProgress(e.target.valueAsNumber);
+        }}
       ></ProgressBar>
       <audio
         id="audioplayer"

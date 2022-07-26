@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  -webkit-appearance: none;
+}
+
 .sidebar-button {
   @apply text-mygrey-900 hover:text-white capitalize overflow-hidden text-ellipsis whitespace-nowrap;
 }
