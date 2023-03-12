@@ -1,11 +1,6 @@
-import { useState } from "react";
-import { MdPauseCircleFilled, MdPlayCircleFilled } from "react-icons/md";
-import { RiHeartFill, RiHeartLine } from "react-icons/ri";
-import { AiOutlineEllipsis } from "react-icons/ai";
-import { Song, songList1 } from "./Dashboard";
-import { BiTime } from "react-icons/bi";
-import { useStoreActions, useStoreState } from "easy-peasy";
-import { StoreModel } from "../Store/Player";
+import { useEffect, useState } from "react";
+import { queueStore } from "../Store/QueueStore";
+import { Song } from "./Dashboard";
 import { SongListItem } from "./SongListItem";
 
 interface SongList {
@@ -16,7 +11,14 @@ const SongQueue: React.FunctionComponent<SongList> = (props) => {
   const [play, setPlay] = useState(false);
   const [liked, setLiked] = useState(false);
 
-  const queueList: Song[] = useStoreState<StoreModel>((state) => state.queue);
+  const [queueList, setQueueList] = useState<Song[]>(queueStore.getState());
+
+  useEffect(() => {
+    queueStore.subscribe(() => {
+      setQueueList(queueStore.getState());
+    });
+  });
+
   function handleLikeClick() {
     setLiked(!liked);
   }
@@ -42,6 +44,7 @@ const SongQueue: React.FunctionComponent<SongList> = (props) => {
                 <SongListItem
                   index={0}
                   song={{
+                    id: "",
                     name: "",
                     artist: "",
                     image_url: "",

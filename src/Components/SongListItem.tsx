@@ -1,7 +1,6 @@
-import { useStoreActions, useStoreState } from "easy-peasy";
 import { useState } from "react";
 import { AiOutlineEllipsis } from "react-icons/ai";
-import { StoreModel } from "../Store/Player";
+import { MdPlayArrow } from "react-icons/md";
 import { Song } from "./Dashboard";
 
 interface SongProps {
@@ -11,13 +10,29 @@ interface SongProps {
 
 const SongListItem: React.FunctionComponent<SongProps> = ({ index, song }) => {
   const [showSongMenu, setShowSongMenu] = useState(false);
-  const queue: Song[] = useStoreState<StoreModel>((state) => state.queue);
-  const updateQueue = useStoreActions<StoreModel>((state) => state.updateQueue);
+  // const queue: Song[] = useStoreState<StoreModel>((state) => state.queue);
+  // const updateQueue = useStoreActions<StoreModel>((state) => state.updateQueue);
 
+  const [playIcon, setPlayIcon] = useState<boolean>(false);
   return (
-    <tr className="rounded hover:bg-mygrey-400">
+    <tr
+      className="rounded hover:bg-mygrey-400"
+      onMouseEnter={() => {
+        setPlayIcon(true);
+      }}
+      onMouseLeave={() => {
+        setPlayIcon(false);
+      }}
+    >
       <td>
-        <span className="p-4">{index + 1}</span>
+        <div className="song-order-number">
+          <span className={"pl-6 " + (playIcon ? "hidden" : "block")}>
+            {index + 1}
+          </span>
+          <button className={"pl-6 " + (playIcon ? "inline" : "hidden")}>
+            <MdPlayArrow />
+          </button>
+        </div>
       </td>
       <td className="flex">
         <span className="p-2">
@@ -28,8 +43,8 @@ const SongListItem: React.FunctionComponent<SongProps> = ({ index, song }) => {
           <span className="block text-xs text-mygrey-200">{song.artist}</span>
         </span>
       </td>
-      <td className="w-80">
-        <span>{song.audio_src}</span>
+      <td className="w-80 text-mygrey-200">
+        <span>{"5:40"}</span>
       </td>
       <td>
         <button
@@ -45,13 +60,13 @@ const SongListItem: React.FunctionComponent<SongProps> = ({ index, song }) => {
               className="py-2 px-4 hover:bg-mygrey-400 w-full rounded"
               onClick={() => {
                 setShowSongMenu(!showSongMenu);
-                let q = queue;
-                q.push(song);
-                console.log(q);
-                updateQueue(q);
+                // let q = queue;
+                // q.push(song);
+                // console.log(q);
+                // updateQueue(q);
               }}
             >
-              Add to Queue
+              Remove
             </button>
             <button
               className="py-2 px-4 hover:bg-mygrey-400 w-full rounded"

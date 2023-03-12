@@ -1,10 +1,9 @@
-import React from "react";
-import MainPage from "./Pages/MainPage";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginPage from "./Pages/LoginPage";
-import SongQueue from "./Components/SongQueue";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./Components/Dashboard";
 import Playlist from "./Components/Playlist";
+import SongQueue from "./Components/SongQueue";
+import LoginPage from "./Pages/LoginPage";
+import MainPage from "./Pages/MainPage";
 
 function App() {
   return (
@@ -20,7 +19,7 @@ function App() {
         </Routes>
       </BrowserRouter> */}
 
-      <BrowserRouter basename="/spotify-clone">
+      <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<MainPage />}>
             <Route index element={<Dashboard />}></Route>

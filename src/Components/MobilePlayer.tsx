@@ -1,12 +1,19 @@
-import { useStoreState } from "easy-peasy";
+// import { useStoreState } from "easy-peasy";
 import { useState } from "react";
 import { BiHeart } from "react-icons/bi";
 import { MdPauseCircle, MdPlayCircle } from "react-icons/md";
-import { StoreModel } from "../Store/Player";
+// import { StoreModel } from "../Store/Player";
 import { Song } from "./Dashboard";
 
 const MobilePlayer: React.FunctionComponent = (props) => {
-  const song: Song = useStoreState<StoreModel>((state) => state.song);
+  const song: Song = {
+    id: "ads",
+    name: "adjns",
+    image_url: "kds",
+    artist: "ajsdnjsf",
+    description: "ssd",
+    audio_src: "dance",
+  };
   const [playing, setPlaying] = useState(false);
   return (
     <div className="mobile-player-bar flex justify-around items-center bg-mygrey-700 opacity-90 fixed bottom-0 w-[98%] h-24 text-white rounded m-1">

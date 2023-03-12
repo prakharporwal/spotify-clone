@@ -1,27 +1,34 @@
-import React, { useEffect, useRef, useState } from "react";
-import { TbRepeat, TbRepeatOnce } from "react-icons/tb";
-import { RiHeartFill, RiHeartLine } from "react-icons/ri";
+import React, { createRef, useEffect, useState } from "react";
+import { AiFillPauseCircle, AiFillPlayCircle } from "react-icons/ai";
 import { BiShuffle } from "react-icons/bi";
+import { FiVolume, FiVolume1, FiVolume2, FiVolumeX } from "react-icons/fi";
 import {
   MdOutlinePictureInPictureAlt,
+  MdOutlineQueueMusic,
   MdSkipNext,
   MdSkipPrevious,
-  MdOutlineQueueMusic,
 } from "react-icons/md";
-import { FiVolume1, FiVolumeX, FiVolume2, FiVolume } from "react-icons/fi";
-import { AiFillPlayCircle, AiFillPauseCircle } from "react-icons/ai";
+import { RiHeartFill, RiHeartLine } from "react-icons/ri";
+import { TbRepeat, TbRepeatOnce } from "react-icons/tb";
 import { Link } from "react-router-dom";
-import ProgressBar from "./ProgressBar";
-import { State, useStoreActions, useStoreState } from "easy-peasy";
-import { createRef } from "react";
-import { StoreModel } from "../Store/Player";
-import { Song } from "./Dashboard";
+import counterStore from "../Store/Counter";
+import { queueStore } from "../Store/QueueStore";
+// import { StoreModel } from "../Store/Player";
 import { numOfSecondsToMMSS } from "../utils/Date";
+import { Song } from "./Dashboard";
+import ProgressBar from "./ProgressBar";
 // import "./SongPlayer.css";
 
 const SongPlayer: React.FunctionComponent<any> = (props) => {
   const [liked, setLiked] = useState(false);
-  const song: Song = useStoreState<StoreModel>((state) => state.song);
+  const [queueState, setQueueState] = useState(queueStore.getState());
+
+  const song = queueState.current_song;
+  useEffect(() => {
+    counterStore.subscribe(() => {
+      setQueueState(counterStore.getState());
+    });
+  });
 
   function handleLikeClick() {
     setLiked(!liked);
@@ -30,7 +37,7 @@ const SongPlayer: React.FunctionComponent<any> = (props) => {
   return (
     <section className="song-player-bar z-[100] flex flex-col justify-evenly items-center md:flex-row bg-mygrey-700 fixed bottom-0 w-full h-52 md:h-24 text-white overflow-hidden">
       <div className="flex w-full md:w-[30%]">
-        <div className="mx-2 h-16 w-16 self-center">
+        <div className="mx-2 h-20 w-20 self-center">
           <img src={song.image_url} alt={song.name}></img>
         </div>
         <div className="py-4 mr-8 gap-1 w-[35%]">
@@ -52,11 +59,20 @@ const SongPlayer: React.FunctionComponent<any> = (props) => {
           <button title="Picture in Picture" className="song-player-button">
             <MdOutlinePictureInPictureAlt />
           </button>
+          {/* <span>{count.value + "c" + counterStore.getState().value}</span> */}
+          {/* <button
+            onClick={() => {
+              let store = counterStore;
+              store.dispatch({ type: "counter/increment" });
+            }} 
+          >
+            {"[]"}
+          </button> */}
         </div>
       </div>
 
       <div className="w-[90%] md:w-[50%]">
-        <PlayerControls />
+        <PlayerControls song={song} />
       </div>
       <div className="flex w-[25%] invisible md:visible">
         <OtherControls />
@@ -75,10 +91,10 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   const [shuffle, setShuffle] = useState(false);
   const [currentTime, setCurrentTime] = useState(-1);
 
-  const queue: Song[] = useStoreState<StoreModel>((state) => state.queue);
-  const song: Song = useStoreState<StoreModel>((state) => state.song);
+  // const queue: Song[] = useStoreState<StoreModel>((state) => state.queue);
+  // const song: Song = useStoreState<StoreModel>((state) => state.song);
 
-  const updateSong = useStoreActions<StoreModel>((state) => state.changeSong);
+  // const updateSong = useStoreActions<StoreModel>((state) => state.changeSong);
 
   // const songSource = useStoreState(
   //   (state: State<StoreModel>) => state.song.audio_src
@@ -237,7 +253,7 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
       </div>
       <div className="w-full invisible md:visible">
         <AudioPlayer
-          song={song}
+          song={props.song}
           playing={playing}
           loop={repeat !== DISABLED}
           src={""}
