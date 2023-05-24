@@ -1,15 +1,18 @@
-name: "GreetContributor"
+name: 'Welcome New Contributors'
+
 on:
-  pull_request:
-    types: [opened,synchronize]
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
 
 jobs:
-  GreetCommitter:    
+  welcome-new-contributor:
     runs-on: ubuntu-latest
     steps:
-    - name: "Greet contributor"
-      uses: ibakshay/greet-contributors-action@v3
-      env: 
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with: 
-        content: "Thank you for taking your time and effort for your contribution, we truly value it"
+      - name: 'Greet the contributor'
+        uses: garg3133/welcome-new-contributors@v1.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: 'Hello there, thanks for opening your first issue. We welcome you to the community!'
+          pr-message: 'Hello there, thanks for opening your first Pull Request. Someone will review it soon.'
