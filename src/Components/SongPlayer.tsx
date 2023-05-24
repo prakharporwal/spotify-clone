@@ -65,7 +65,7 @@ const SongPlayer: React.FunctionComponent<any> = (props) => {
   );
 };
 
-const PlayerControls: React.FunctionComponent<any> = (props) => {
+const PlayerControls: React.FunctionComponent<any> = (props) => { // is this good practice?
   const REPEATONE = "repeatone";
   const DISABLED = "disabled";
   const ENABLED = "enabled";
@@ -311,7 +311,7 @@ const OtherControls: React.FunctionComponent<any> = (props) => {
           className="song-player-button text-xl"
           onClick={(e) => handleVolumeScroll(e)}
         >
-          {renderVolumeButton()}
+          {renderVolumeButton()} // Nit picking - using functions in rendering logic is suggested to be avoided
         </button>
         <div className="volume-bar flex items-center gap-2 w-32">
           <ProgressBar
@@ -362,7 +362,7 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
   useEffect(() => {
     const audioPlayer: HTMLAudioElement | null = document.getElementById(
       "audioplayer"
-    ) as HTMLAudioElement;
+    ) as HTMLAudioElement;   // useRef, too much dependent on id name for element selection
     if (audioPlayer === null) {
       return;
     }
@@ -374,7 +374,7 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
       let intervalId = setInterval(() => {
         let x: number = getCurrentTime();
         setCurrentTime(numOfSecondsToMMSS(x));
-        let prgres = x * 100;
+        let prgres = x * 100; // wait what nigga? toooooo prgresive
         prgres /= totalDur;
         console.log(prgres, x);
         setProgress(prgres);

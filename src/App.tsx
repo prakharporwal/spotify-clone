@@ -22,14 +22,14 @@ function App() {
 
       <BrowserRouter basename="/spotify-clone">
         <Routes>
-          <Route path="/" element={<MainPage />}>
+          <Route path="/" element={<MainPage />}> //is it a good practice?
             <Route index element={<Dashboard />}></Route>
             <Route path="playlist" element={<Playlist />}>
               {/* <Route path="/:id" children={ }></Route> */}
             </Route>
             <Route path="library" element={<Dashboard />}></Route>
             <Route path="search" element={<Dashboard />}></Route>
-            <Route path="queue" element={<SongQueue songsList={[]} />}></Route>
+            <Route path="queue" element={<SongQueue songsList={[]} />}></Route> //we don't need this songList, do we?
           </Route>
 
           <Route path="/login" element={<LoginPage />}></Route>
