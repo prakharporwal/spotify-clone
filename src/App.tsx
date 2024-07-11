@@ -31,7 +31,6 @@ function App() {
             <Route path="search" element={<Dashboard />}></Route>
             <Route path="queue" element={<SongQueue songsList={[]} />}></Route>
           </Route>
-
           <Route path="/login" element={<LoginPage />}></Route>
         </Routes>
       </BrowserRouter>
