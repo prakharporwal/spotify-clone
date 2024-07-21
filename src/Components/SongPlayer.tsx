@@ -12,16 +12,20 @@ import { FiVolume1, FiVolumeX, FiVolume2, FiVolume } from "react-icons/fi";
 import { AiFillPlayCircle, AiFillPauseCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
-import { State, useStoreActions, useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { createRef } from "react";
 import { StoreModel } from "../Store/Player";
-import { Song } from "./Dashboard";
+import { Song } from "../models/Song";
 import { numOfSecondsToMMSS } from "../utils/Date";
+import { connect } from "react-redux";
+import updateSong from "../Store/reducers/songReducer";
+import { ActionTypes } from "../Store/models/ActionTypes";
 // import "./SongPlayer.css";
 
 const SongPlayer: React.FunctionComponent<any> = (props) => {
   const [liked, setLiked] = useState(false);
   const song: Song = useStoreState<StoreModel>((state) => state.song);
+  const updateSong = useStoreActions<StoreModel>((state) => state.changeSong);
 
   function handleLikeClick() {
     setLiked(!liked);
@@ -70,7 +74,11 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   const DISABLED = "disabled";
   const ENABLED = "enabled";
 
-  const [playing, setPlaying] = useState(false);
+  const playing = useStoreState<StoreModel>((state) => state.currentPlayState);
+  const setPlaying = useStoreActions<StoreModel>(
+    (action) => action.updatePlayState
+  );
+  const [volume, setVolume] = useState(50);
   const [repeat, setRepeat] = useState(ENABLED);
   const [shuffle, setShuffle] = useState(false);
   const [currentTime, setCurrentTime] = useState(-1);
@@ -78,7 +86,8 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
   const queue: Song[] = useStoreState<StoreModel>((state) => state.queue);
   const song: Song = useStoreState<StoreModel>((state) => state.song);
 
-  const updateSong = useStoreActions<StoreModel>((state) => state.changeSong);
+  // const dispatch = useStoreDispatch();
+  // <AddTodoForm save={(todo) => dispatch({ type: 'ADD_TODO', payload: todo })} />;
 
   // const songSource = useStoreState(
   //   (state: State<StoreModel>) => state.song.audio_src
@@ -96,7 +105,6 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
       audioPlayer.addEventListener("ended", () => {
         console.log("graceful stop!");
         setPlaying(false);
-        // updateSong(queue.at(2));
       });
     }
   }
@@ -246,8 +254,6 @@ const PlayerControls: React.FunctionComponent<any> = (props) => {
     </div>
   );
 };
-
-export default SongPlayer;
 
 const OtherControls: React.FunctionComponent<any> = (props) => {
   const MUTE = 0;
@@ -446,3 +452,16 @@ const AudioPlayer: React.FunctionComponent<any> = (props) => {
     </div>
   );
 };
+
+const mapStateToProps = (state: any) => ({
+  song: state.song,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  updateSong: (song: any) =>
+    dispatch(
+      updateSong(song, { type: ActionTypes.CHANGE_SONG, payload: song })
+    ),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SongPlayer);

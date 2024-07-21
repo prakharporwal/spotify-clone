@@ -79,7 +79,7 @@ const Sidebar: React.FunctionComponent<any> = (props) => {
           </li>
           <li>
             <button className="sidebar-playlist-button">
-              Disco my boi are too good to travels
+              Disco
             </button>
           </li>
           <li>

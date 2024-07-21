@@ -1,24 +1,14 @@
-import { useStoreActions } from "easy-peasy";
-import React, { MouseEventHandler, useEffect, useState } from "react";
-import { MdPauseCircleFilled, MdPlayCircleFilled } from "react-icons/md";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { StoreModel } from "../Store/Player";
 import Constants from "./Constants";
-
 import "./Dashboard.css";
-
-export type Song = {
-  name: string;
-  image_url: string;
-  artist: string;
-  description?: string;
-  audio_src: string;
-};
+import { Song } from "../models/Song";
+import SongCard from "./SongCard";
 
 export const songList1: Song[] = [
   {
     name: "NCS",
-    image_url: "images/song-best.jpg",
+    image_url: "/images/song-best.jpg",
     artist: "Arijit Singh",
     description: "The Hits Of Arijit",
     audio_src: "songs/madhanya.mp3",
@@ -154,65 +144,6 @@ const SongList: React.FunctionComponent<SongsProp> = (props) => {
         })}
       </div>
     </>
-  );
-};
-
-interface IProp {
-  song: Song;
-}
-
-const SongCard: React.FunctionComponent<IProp> = (props) => {
-  const [play, setPlay] = useState(false);
-  const updateSong = useStoreActions<StoreModel, any>(
-    (store: StoreModel) => store.changeSong
-  );
-
-  function handlePlayButtonCardClick(e: any) {
-    updateSong(props.song);
-    // useStoreActions((store: StoreModel) => store.song.changeSong({}))
-    // updateSong(songList1[0]);
-    setPlay(!play);
-    console.log("changing song payload!");
-    console.log(props.song.audio_src);
-    e.stopPropagation();
-  }
-
-  return (
-    <div className="relative song-card bg-mygrey-500 hover:bg-mygrey-700 inline-block shadow-slate-600 rounded">
-      <button
-        className="play-song-card bg-mygrey-600 rounded-[50%] right-6 bottom-[4.5rem] absolute"
-        onClick={(e) => handlePlayButtonCardClick(e)}
-      >
-        {play ? (
-          <MdPauseCircleFilled className="text-mygreen text-5xl" />
-        ) : (
-          <MdPlayCircleFilled className="text-mygreen text-5xl" />
-        )}
-      </button>
-      {/* <Link to={"/playlist"}> */}
-      <div className="rounded p-4 flex flex-col text-left w-52 ">
-        {/* <BsFillPlayFill className="text-red text-3xl" /> */}
-        <div className="h-46 w-46 self-center">
-          <img
-            className="album-image rounded h-44 w-44"
-            src={props.song.image_url}
-            alt={props.song.name.toLowerCase()}
-          />
-        </div>
-        <div className="px-4 py-2 flex flex-col">
-          <span className="capitalize font-semibold text-sm overflow-hidden text-ellipsis">
-            {props.song.name}
-          </span>
-          <span className="artist-name text-xs text-gray-400 overflow-hidden text-ellipsis">
-            {props.song.artist}
-          </span>
-          {/* <span className="text-2xs font-semibold text-gray-400">
-              {props.song.description || "Hello"}
-            </span> */}
-        </div>
-      </div>
-      {/* </Link> */}
-    </div>
   );
 };
 

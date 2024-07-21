@@ -1,9 +1,11 @@
 import { action, Action, createStore, debug } from "easy-peasy";
-import { Song } from "../Components/Dashboard";
+import { Song } from "../models/Song";
 
 interface StoreModel {
   song: Song;
   changeSong: Action<any, any>;
+  currentPlayState: Boolean;
+  updatePlayState: Action<any, Boolean>;
   queue: Song[];
   updateQueue: Action<any, any>;
   // currentSongIndex: number;
@@ -17,6 +19,11 @@ const playerStore = createStore<StoreModel>({
     image_url: "images/song-mix.jpg",
     artist: "Pratband",
   },
+  currentPlayState: false,
+  updatePlayState: action((state: any, payload: Boolean) => {
+    console.log("updatePlayState", debug(state), payload);
+    state.currentPlayState = payload;
+  }),
   changeSong: action((state: any, payload: any) => {
     console.log(debug(state));
     state.song = payload;

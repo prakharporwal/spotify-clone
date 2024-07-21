@@ -2,7 +2,7 @@ import { useStoreActions, useStoreState } from "easy-peasy";
 import { useState } from "react";
 import { AiOutlineEllipsis } from "react-icons/ai";
 import { StoreModel } from "../Store/Player";
-import { Song } from "./Dashboard";
+import { Song } from "../models/Song";
 
 interface SongProps {
   index: number;
