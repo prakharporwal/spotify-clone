@@ -4,7 +4,7 @@ import { BiTime } from "react-icons/bi";
 import { MdPauseCircleFilled, MdPlayCircleFilled } from "react-icons/md";
 import { RiHeartFill, RiHeartLine } from "react-icons/ri";
 import { useParams } from "react-router-dom";
-import { songList1 } from "./Dashboard";
+import { songList1 } from "./Dashboard/Dashboard";
 
 import "./Playlist.css";
 import { SongListItem } from "./SongListItem";

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Constants from "./Constants";
+import Constants from "../Constants";
 import "./Dashboard.css";
-import { Song } from "../models/Song";
-import SongCard from "./SongCard";
+import { Song } from "../../models/Song";
+import SongCard from "../SongCard";
 
 export const songList1: Song[] = [
   {
@@ -110,8 +110,8 @@ const Dashboard: React.FunctionComponent<any> = (props) => {
   }, []);
 
   return (
-    <div className="relative z-[-100]">
-      <div className="absolute top-0 md:left-64 left-0 md:w-[calc(100vw-17rem)] w-full overflow-y-auto bg-mygrey-600 text-white">
+    <div className="relative z-[-100] bg-black">
+      <div className="absolute top-12 md:left-64 left-0 md:w-[calc(100vw-16rem)] w-full overflow-y-auto bg-mygrey-600 text-white">
         <div className="flex flex-col p-2 m-2 mb-52 md:mb-24">
           {albums2.map((album) => {
             return <SongList album={album}></SongList>;

@@ -1,14 +1,13 @@
-import React from "react";
 import MainPage from "./Pages/MainPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./Pages/LoginPage";
 import SongQueue from "./Components/SongQueue";
-import Dashboard from "./Components/Dashboard";
+import Dashboard from "./Components/Dashboard/Dashboard";
 import Playlist from "./Components/Playlist";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-red-500">
       {/* <BrowserRouter>
         <Routes>
           <Route element={<MainPage />}>
@@ -19,13 +18,12 @@ function App() {
           <Route path="/login" element={<LoginPage />}></Route>
         </Routes>
       </BrowserRouter> */}
-
       <BrowserRouter basename="/spotify-clone">
         <Routes>
           <Route path="/" element={<MainPage />}>
             <Route index element={<Dashboard />}></Route>
             <Route path="playlist" element={<Playlist />}>
-              {/* <Route path="/:id" children={ }></Route> */}
+              {/* <Route path="/:id" children={}></Route> */}
             </Route>
             <Route path="library" element={<Dashboard />}></Route>
             <Route path="search" element={<Dashboard />}></Route>
