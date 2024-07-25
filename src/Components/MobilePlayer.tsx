@@ -3,7 +3,7 @@ import { useState } from "react";
 import { BiHeart } from "react-icons/bi";
 import { MdPauseCircle, MdPlayCircle } from "react-icons/md";
 import { StoreModel } from "../Store/Player";
-import { Song } from "./Dashboard";
+import { Song } from "../models/Song";
 
 const MobilePlayer: React.FunctionComponent = (props) => {
   const song: Song = useStoreState<StoreModel>((state) => state.song);

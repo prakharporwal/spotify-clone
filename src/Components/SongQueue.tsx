@@ -1,12 +1,8 @@
-import { useState } from "react";
-import { MdPauseCircleFilled, MdPlayCircleFilled } from "react-icons/md";
-import { RiHeartFill, RiHeartLine } from "react-icons/ri";
-import { AiOutlineEllipsis } from "react-icons/ai";
-import { Song, songList1 } from "./Dashboard";
-import { BiTime } from "react-icons/bi";
-import { useStoreActions, useStoreState } from "easy-peasy";
+import { useEffect, useState } from "react";
+import { useStoreState } from "easy-peasy";
 import { StoreModel } from "../Store/Player";
 import { SongListItem } from "./SongListItem";
+import { Song } from "../models/Song";
 
 interface SongList {
   songsList: Song[];
@@ -20,6 +16,10 @@ const SongQueue: React.FunctionComponent<SongList> = (props) => {
   function handleLikeClick() {
     setLiked(!liked);
   }
+
+  useEffect(() => {
+    document.title = "Queue";
+  }, []);
 
   return (
     <div className="relative z-[-100] w-full">
