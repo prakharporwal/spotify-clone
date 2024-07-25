@@ -8,7 +8,7 @@ const Dashboard = lazy(() => import("./Components/Dashboard"));
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-red-500">
       {/* <BrowserRouter>
         <Routes>
           <Route element={<MainPage />}>
@@ -19,18 +19,16 @@ function App() {
           <Route path="/login" element={<LoginPage />}></Route>
         </Routes>
       </BrowserRouter> */}
-
       <BrowserRouter basename="/spotify-clone">
         <Routes>
           <Route path="/" element={<MainPage />}>
             <Route index element={<Dashboard />}></Route>
             <Route path="playlist" element={<Playlist />}>
-              {/* <Route path="/:id" children={ }></Route> */}
+              {/* <Route path="/:id" children={}></Route> */}
             </Route>
             <Route path="library" element={<Dashboard />}></Route>
             <Route path="queue" element={<SongQueue songsList={[]} />}></Route>
           </Route>
-
           <Route path="/login" element={<LoginPage />}></Route>
         </Routes>
       </BrowserRouter>

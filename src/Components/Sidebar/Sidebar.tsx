@@ -3,9 +3,10 @@ import { MdHomeFilled } from "react-icons/md";
 import { GoSearch } from "react-icons/go";
 import { BiLibrary } from "react-icons/bi";
 import { Link, NavLink } from "react-router-dom";
-import { ReactComponent as SpotifyIcon } from "../assets/svg/spotify-icon.svg";
+import { ReactComponent as SpotifyIcon } from "../../assets/svg/spotify-icon.svg";
 
 import "./Sidebar.css";
+import PlaylistSection from "./Sections/Playlist";
 
 const Sidebar: React.FunctionComponent<any> = (props) => {
   return (
@@ -30,7 +31,7 @@ const Sidebar: React.FunctionComponent<any> = (props) => {
               </button>
             </NavLink>
           </li>
-          <li className="py-1">
+          {/* <li className="py-1">
             <NavLink
               to="search"
               className={({ isActive }) =>
@@ -42,7 +43,7 @@ const Sidebar: React.FunctionComponent<any> = (props) => {
                 Search
               </button>
             </NavLink>
-          </li>
+          </li> */}
           <li className="py-1">
             <NavLink
               to="library"
@@ -72,54 +73,7 @@ const Sidebar: React.FunctionComponent<any> = (props) => {
       <div className="relative flex pt-3 items-center">
         <div className="flex-grow border-t border-gray-600"></div>
       </div>
-      <div className="text-sm h-[50%] pt-2">
-        <ul className="playlist p-4 h-[60%] overflow-y-auto">
-          <li>
-            <button className="sidebar-playlist-button">Arijit</button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">
-              Disco my boi are too good to travels
-            </button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">Dancer</button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">Disco</button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">Dancer</button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">Disco</button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">Dancer</button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">Disco</button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">Dancer</button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">Disco</button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">Dancer</button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">Disco</button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">Dancer</button>
-          </li>
-          <li>
-            <button className="sidebar-playlist-button">Disco</button>
-          </li>
-        </ul>
-      </div>
+      <PlaylistSection />
     </div>
   );
 };
