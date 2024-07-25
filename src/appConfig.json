@@ -1,0 +1,17 @@
+{
+  "featureFlag": {
+    "header": {
+      "login": false
+    },
+    "sidebar": {
+      "search": false,
+      "library": false,
+      "playlist": false
+    },
+    "songplayer": {
+      "queue": false,
+      "likeSong": false,
+      "miniplayer": false
+    }
+  }
+}
