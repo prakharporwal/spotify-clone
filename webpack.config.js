@@ -7,16 +7,16 @@ const path = require("path");
 
 module.exports = {
   mode: "development",
-  entry: "./src/index.js",
+  entry: "./src/index.tsx",
   devtool: "inline-source-map",
-  devserver: {
+  devServer: {
     historyApiFallback: true,
   },
   module: {
     rules: [
       // First Rule
       {
-        test: /\.(js,jsx)$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: ["babel-loader"],
       },
@@ -31,7 +31,6 @@ module.exports = {
             loader: "css-loader",
             options: {
               modules: true,
-              localsConvention: "camelCase",
               sourceMap: true,
             },
           },
@@ -39,17 +38,22 @@ module.exports = {
       },
 
       {
-        test: /\.(ts,tsx)?$/,
+        test: /\.(ts|tsx)$/,
         use: "ts-loader",
         exclude: /node_modules/,
+      },
+      {
+        test: /\.svg$/,
+        loader: "svg-inline-loader",
       },
     ],
   },
   resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
     alias: {
       "*": path.resolve(__dirname, "*"),
+      exclude: ["node_modules"],
     },
-    exclude: ["node_modules"],
   },
   output: {
     filename: "bundle.js",

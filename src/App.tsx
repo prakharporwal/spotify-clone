@@ -1,9 +1,10 @@
-import MainPage from "./Pages/MainPage";
+import { lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./Pages/LoginPage";
+import MainPage from "./Pages/MainPage";
 import SongQueue from "./Components/SongQueue";
-import Dashboard from "./Components/Dashboard";
-import Playlist from "./Components/Playlist";
+const Playlist = lazy(() => import("./Components/Playlist"));
+const Dashboard = lazy(() => import("./Components/Dashboard"));
 
 function App() {
   return (
@@ -26,7 +27,6 @@ function App() {
               {/* <Route path="/:id" children={}></Route> */}
             </Route>
             <Route path="library" element={<Dashboard />}></Route>
-            <Route path="search" element={<Dashboard />}></Route>
             <Route path="queue" element={<SongQueue songsList={[]} />}></Route>
           </Route>
           <Route path="/login" element={<LoginPage />}></Route>
