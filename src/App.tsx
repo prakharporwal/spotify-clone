@@ -2,7 +2,7 @@ import MainPage from "./Pages/MainPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./Pages/LoginPage";
 import SongQueue from "./Components/SongQueue";
-import Dashboard from "./Components/Dashboard/Dashboard";
+import Dashboard from "./Components/Dashboard";
 import Playlist from "./Components/Playlist";
 
 function App() {

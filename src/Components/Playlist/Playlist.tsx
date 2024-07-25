@@ -108,4 +108,4 @@ const Playlist: React.FunctionComponent<any> = (props) => {
   );
 };
 
-export default Playlist;
+export { Playlist };

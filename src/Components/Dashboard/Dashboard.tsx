@@ -147,4 +147,4 @@ const SongList: React.FunctionComponent<SongsProp> = (props) => {
   );
 };
 
-export default Dashboard;
+export { Dashboard };
