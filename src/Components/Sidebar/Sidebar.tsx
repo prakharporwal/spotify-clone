@@ -31,7 +31,7 @@ const Sidebar: React.FunctionComponent<any> = (props) => {
               </button>
             </NavLink>
           </li>
-          <li className="py-1">
+          {/* <li className="py-1">
             <NavLink
               to="search"
               className={({ isActive }) =>
@@ -43,7 +43,7 @@ const Sidebar: React.FunctionComponent<any> = (props) => {
                 Search
               </button>
             </NavLink>
-          </li>
+          </li> */}
           <li className="py-1">
             <NavLink
               to="library"

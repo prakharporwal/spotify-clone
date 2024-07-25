@@ -8,7 +8,7 @@ import SongCard from "../SongCard";
 export const songList1: Song[] = [
   {
     name: "NCS",
-    image_url: "/images/song-best.jpg",
+    image_url: "images/song-best.jpg",
     artist: "Arijit Singh",
     description: "The Hits Of Arijit",
     audio_src: "songs/madhanya.mp3",

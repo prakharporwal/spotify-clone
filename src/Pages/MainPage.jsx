@@ -1,6 +1,6 @@
 import React from "react";
 import Sidebar from "../Components/Sidebar/Sidebar";
-import SongPlayer from "../Components/SongPlayer";
+import SongPlayer from "../Components/SongPlayer/SongPlayer";
 import { Outlet } from "react-router-dom";
 import { StoreProvider } from "easy-peasy";
 import { playerStore } from "../Store/Player";

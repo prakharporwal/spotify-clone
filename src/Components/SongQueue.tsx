@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStoreState } from "easy-peasy";
 import { StoreModel } from "../Store/Player";
 import { SongListItem } from "./SongListItem";
@@ -16,6 +16,10 @@ const SongQueue: React.FunctionComponent<SongList> = (props) => {
   function handleLikeClick() {
     setLiked(!liked);
   }
+
+  useEffect(() => {
+    document.title = "Queue";
+  }, []);
 
   return (
     <div className="relative z-[-100] w-full">
