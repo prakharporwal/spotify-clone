@@ -18,7 +18,7 @@ func NewServer() *Server {
 }
 
 func (server *Server) Start() error {
-	klogger.Info("Starting Server!")
+	klogger.Info("Starting Server ...!")
 	return server.router.Run(env.ServerAddress + ":" + env.ServerPort)
 }
 
